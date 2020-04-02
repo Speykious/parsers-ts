@@ -1,0 +1,21 @@
+{
+  "name": "parsers-ts",
+  "version": "1.0.0",
+  "description": "Making simple parsers in typescript.",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "node ./build/test.js"
+  },
+  "author": "Speykious",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Speykious/parsers-ts"
+  },
+  "license": "GPL-3.0",
+  "private": false,
+  "devDependencies": {
+    "@types/node": "^13.9.8",
+    "typescript": "^3.8.3"
+  }
+}
