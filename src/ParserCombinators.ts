@@ -1,6 +1,5 @@
 import { Parser } from './Parsers';
 import { ParserState } from './ParserState';
-import { transcode } from 'buffer';
 
 /**
  * Runs a sequence of parsers in order.
