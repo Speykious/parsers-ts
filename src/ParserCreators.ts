@@ -1,4 +1,4 @@
-import { Parser } from './Parsers';
+import { Parser } from './Parser';
 // import { ParserState } from './ParserState';
 import { colors } from './colors';
 
