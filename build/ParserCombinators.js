@@ -29,7 +29,6 @@ exports.sequenceOf = (...parsers) => new Parser_1.Parser(inputState => {
 exports.choice = (...parsers) => new Parser_1.Parser(inputState => {
     if (inputState.error)
         return inputState;
-    const results = [];
     for (let parser of parsers) {
         const nextState = parser.transformer(inputState);
         if (!nextState.error)
@@ -41,6 +40,7 @@ exports.choice = (...parsers) => new Parser_1.Parser(inputState => {
 /**
  * Runs the parser as many times as possible.
  * @param parser The parsers to run.
+ * @param min The minimum amount of times to run the parser for it to be successful.
  */
 exports.many = (parser, min = 0) => new Parser_1.Parser(inputState => {
     if (inputState.error)

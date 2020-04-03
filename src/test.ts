@@ -15,5 +15,5 @@ const myChainParser = sequenceOf(between(str('<'), str('>'))(word), spaces)
 
 const argsParser = manyJoin(myChainParser, sequenceOf(str(','), many(spaces)));
 
-console.log(argsParser.run('<word> wAOw yay'));
-console.log(argsParser.run('<number> 123456, <word> wAOw, <word> incredible, <word> yeet'));
+console.log(myChainParser.run('<word>wAOw yay'));
+console.log(argsParser.run('<number> 123456, <word> wAOw, <word> incredible, <word> yeet, 0xf1g4b9fst4g9fs'));

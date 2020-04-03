@@ -33,6 +33,11 @@ export declare class Parser<TOut> {
      */
     map<T>(fn: (result: TOut) => T): any;
     /**
+     * Creates a new parser that will transform the error of the previous parser.
+     * @param fn The function that transforms the result.
+     */
+    mapError(errorMsgProvider: ErrorMsgProvider): Parser<TOut>;
+    /**
      * Chooses the next parser depending on the previous result.
      * @param fn The function that chooses the next parser.
      */

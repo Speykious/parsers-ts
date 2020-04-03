@@ -36,6 +36,18 @@ class Parser {
         });
     }
     /**
+     * Creates a new parser that will transform the error of the previous parser.
+     * @param fn The function that transforms the result.
+     */
+    mapError(errorMsgProvider) {
+        return new Parser(inputState => {
+            const nextState = this.transformer(inputState);
+            if (nextState.error)
+                return ParserState_1.ParserState.errorify(nextState, errorMsgProvider);
+            return nextState;
+        });
+    }
+    /**
      * Chooses the next parser depending on the previous result.
      * @param fn The function that chooses the next parser.
      */

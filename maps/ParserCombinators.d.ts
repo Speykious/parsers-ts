@@ -12,6 +12,7 @@ export declare const choice: (...parsers: Parser<any>[]) => Parser<any>;
 /**
  * Runs the parser as many times as possible.
  * @param parser The parsers to run.
+ * @param min The minimum amount of times to run the parser for it to be successful.
  */
 export declare const many: (parser: Parser<any>, min?: number) => Parser<any>;
 export declare const between: <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(content: Parser<T>) => Parser<T>;

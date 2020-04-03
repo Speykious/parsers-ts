@@ -35,14 +35,13 @@ export const sequenceOf = (...parsers: Parser<any>[]) =>
 export const choice = (...parsers: Parser<any>[]) =>
 	new Parser(inputState => {
 		if (inputState.error) return inputState;
-		const results: undefined[] = [];
 
 		for (let parser of parsers) {
 			const nextState = parser.transformer(inputState);
 			if (!nextState.error)
 				return nextState;
 		}
-		// This part remains to be coded...
+		
 		return ParserState.errorify(inputState,
 			(targetString, index) => `choice: unable to match with any parser at index ${index}`)
 	});
@@ -50,6 +49,7 @@ export const choice = (...parsers: Parser<any>[]) =>
 /**
  * Runs the parser as many times as possible.
  * @param parser The parsers to run.
+ * @param min The minimum amount of times to run the parser for it to be successful.
  */
 export const many = (parser: Parser<any>, min = 0) =>
 new Parser(inputState => {
