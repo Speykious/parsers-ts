@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Making simple parsers in typescript.",
   "main": "./build/index.js",
+  "types": "./maps",
   "scripts": {
     "start": "node .",
     "test": "node ./build/test.js"
