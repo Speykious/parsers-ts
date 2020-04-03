@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Parsers_1 = require("./Parsers");
+const Parser_1 = require("./Parser");
 const ParserState_1 = require("./ParserState");
 /**
  * Runs a sequence of parsers in order.
  * @param parsers The parsers to run.
  */
-exports.sequenceOf = (...parsers) => new Parsers_1.Parser(inputState => {
+exports.sequenceOf = (...parsers) => new Parser_1.Parser(inputState => {
     if (inputState.error)
         return inputState;
     const results = [];
@@ -26,7 +26,7 @@ exports.sequenceOf = (...parsers) => new Parsers_1.Parser(inputState => {
  * Runs the first parser that is successful.
  * @param parsers The parsers to run.
  */
-exports.choice = (...parsers) => new Parsers_1.Parser(inputState => {
+exports.choice = (...parsers) => new Parser_1.Parser(inputState => {
     if (inputState.error)
         return inputState;
     const results = [];
@@ -42,7 +42,7 @@ exports.choice = (...parsers) => new Parsers_1.Parser(inputState => {
  * Runs the parser as many times as possible.
  * @param parser The parsers to run.
  */
-exports.many = (parser, min = 0) => new Parsers_1.Parser(inputState => {
+exports.many = (parser, min = 0) => new Parser_1.Parser(inputState => {
     if (inputState.error)
         return inputState;
     const results = [];
@@ -85,7 +85,7 @@ exports.join = (parsers, joiner, joinResults = false) => {
  * @param joiner The parser interconnecting the other parser together.
  */
 exports.manyJoin = (parser, joiner, min = 0, joinResults = false) => {
-    return new Parsers_1.Parser(inputState => {
+    return new Parser_1.Parser(inputState => {
         if (inputState.error)
             return inputState;
         const results = [];

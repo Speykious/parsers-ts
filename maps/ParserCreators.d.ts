@@ -1,4 +1,4 @@
-import { Parser } from './Parsers';
+import { Parser } from './Parser';
 /**
  * Creates a parser that matches a string.
  * @param s The string to match when parsing.

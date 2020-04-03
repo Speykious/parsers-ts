@@ -79,4 +79,4 @@ class Parser {
 }
 exports.Parser = Parser;
 Parser.void = new Parser(state => state);
-//# sourceMappingURL=Parsers.js.map
+//# sourceMappingURL=Parser.js.map

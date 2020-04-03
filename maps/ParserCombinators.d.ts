@@ -1,4 +1,4 @@
-import { Parser } from './Parsers';
+import { Parser } from './Parser';
 /**
  * Runs a sequence of parsers in order.
  * @param parsers The parsers to run.
