@@ -1,9 +1,7 @@
 import { ParserState, ErrorMsgProvider } from './ParserState';
 
 /** Transforms a ParserState into another ParserState. */
-export type ParserStateTransformer<TIn, TOut> = (
-	inputState: ParserState<TIn>
-) => ParserState<TOut>;
+export type ParserStateTransformer<TIn, TOut> = (inputState: ParserState<TIn>) => ParserState<TOut>;
 /**
  * Transforms a matched string into useful data.
  * The matched string is supposed to have all the properties
@@ -57,8 +55,7 @@ export class Parser<TOut> {
 		return new Parser<TOut>((inputState) => {
 			const nextState = this.transformer(inputState);
 
-			if (nextState.error)
-				return ParserState.errorify(nextState, errorMsgProvider);
+			if (nextState.error) return ParserState.errorify(nextState, errorMsgProvider);
 
 			return nextState;
 		}) as Parser<TOut>;
@@ -113,11 +110,7 @@ export class Parser<TOut> {
 			const match = slicedString.match(regex);
 			if (match)
 				// Success... Or not success? Hmmmmmmm <_<
-				return ParserState.update(
-					inputState,
-					index + match[0].length,
-					matchTransformer(match[0])
-				);
+				return ParserState.update(inputState, index + match[0].length, matchTransformer(match[0]));
 			else return ParserState.errorify(inputState, errorMsgProvider);
 		});
 

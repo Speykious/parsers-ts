@@ -4,10 +4,7 @@ import { sequenceOf, between, join, manyJoin } from '../src/ParserCombinators';
 // import { colors } from './colors';
 
 test('Parser Combinator: chain', () => {
-	const myChainParser = sequenceOf(
-		[between(str('<'), str('>'))(word), spaces],
-		1
-	)
+	const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces], 1)
 		.map((result) => result[0] as string)
 		.chain(
 			(result): Parser<any> => {

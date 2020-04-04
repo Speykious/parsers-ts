@@ -29,8 +29,7 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 
 		if (finalError && (psucceed < min || min === -1))
 			return ParserState.errorify(nextState, () => finalError);
-		else
-			return { ...nextState, index: lastIndex, result: results, error: null };
+		else return { ...nextState, index: lastIndex, result: results, error: null };
 	});
 
 /**
@@ -48,8 +47,7 @@ export const choice = (...parsers: Parser<any>[]) =>
 
 		return ParserState.errorify(
 			inputState,
-			(targetString, index) =>
-				`choice: unable to match with any parser at index ${index}`
+			(targetString, index) => `choice: unable to match with any parser at index ${index}`
 		);
 	});
 
@@ -79,17 +77,10 @@ export const many = (parser: Parser<any>, min = 0) =>
 			);
 		}
 
-		return new ParserState(
-			nextState.targetString,
-			nextState.index,
-			results,
-			null
-		);
+		return new ParserState(nextState.targetString, nextState.index, results, null);
 	});
 //
-export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(
-	content: Parser<T>
-) =>
+export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(content: Parser<T>) =>
 	sequenceOf([left, content, right]).map((results) => results[1]) as Parser<T>;
 
 /**
@@ -163,11 +154,6 @@ export const manyJoin = (
 			);
 		}
 
-		return new ParserState(
-			nextState.targetString,
-			nextState.index,
-			results,
-			null
-		);
+		return new ParserState(nextState.targetString, nextState.index, results, null);
 	});
 };
