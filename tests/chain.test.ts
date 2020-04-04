@@ -26,5 +26,5 @@ test('Parser Combinator: chain', () => {
   const runstate2 = argsParser.run('<number> 123456, <word>wAOw,<word>    incredible, <word> yeet yeet');
 
   expect(runstate1.error).toBe(null);
-  expect(runstate2.error).toBe(null);
+  expect(runstate2.error).not.toBe(null);
 });
