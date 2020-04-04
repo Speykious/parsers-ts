@@ -8,7 +8,7 @@
 		// "inlineSourceMap": true,
 		"sourceMap": true,
 		"declaration": true,
-		"declarationDir": "./maps",
+		"declarationDir": "./build",
 
 		"types": ["node"],
 		"typeRoots": ["./node_modules/@types"]

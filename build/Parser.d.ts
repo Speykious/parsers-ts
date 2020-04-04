@@ -31,7 +31,7 @@ export declare class Parser<TOut> {
      * Creates a new parser that will transform the result of the previous parser.
      * @param fn The function that transforms the result.
      */
-    map<T>(fn: (result: TOut) => T): any;
+    map<T>(fn: (result: TOut) => T): Parser<T>;
     /**
      * Creates a new parser that will transform the error of the previous parser.
      * @param fn The function that transforms the result.

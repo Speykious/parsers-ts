@@ -39,7 +39,7 @@ export class Parser<TOut> {
 	 * Creates a new parser that will transform the result of the previous parser.
 	 * @param fn The function that transforms the result.
 	 */
-	map<T>(fn: (result: TOut) => T) {
+	map<T>(fn: (result: TOut) => T): Parser<T> {
 		return new Parser<TOut|T>(inputState => {
 			const nextState = this.transformer(inputState);
 

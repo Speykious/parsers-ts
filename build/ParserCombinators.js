@@ -34,7 +34,6 @@ exports.choice = (...parsers) => new Parser_1.Parser(inputState => {
         if (!nextState.error)
             return nextState;
     }
-    // This part remains to be coded...
     return ParserState_1.ParserState.errorify(inputState, (targetString, index) => `choice: unable to match with any parser at index ${index}`);
 });
 /**
