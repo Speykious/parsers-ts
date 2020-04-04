@@ -16,7 +16,7 @@ const myChainParser = ParserCombinators_1.sequenceOf([ParserCombinators_1.betwee
 });
 //const argsParser = manyJoin(myChainParser, sequenceOf([str(','), spaces], 1));
 const sep = ParserCombinators_1.sequenceOf([ParserCreators_1.str(','), ParserCreators_1.spaces], 1);
-const argsParser = ParserCombinators_1.manyJoin(myChainParser, sep);
+const argsParser = ParserCombinators_1.join([myChainParser, myChainParser, myChainParser, myChainParser, myChainParser], sep, 5);
 console.log(myChainParser.run('<word>wAOw yay'));
 console.log(argsParser.run('<number> 123456, <word>wAOw,<word>    incredible, <word> yeet yeet'));
 //# sourceMappingURL=test.js.map

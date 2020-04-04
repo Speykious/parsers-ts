@@ -1,6 +1,6 @@
 import { Parser } from './Parser';
 import { str, word, spaces, digits } from './ParserCreators';
-import { sequenceOf, many, manyJoin, between } from './ParserCombinators';
+import { sequenceOf, many, manyJoin, between, join } from './ParserCombinators';
 // import { colors } from './colors';
 
 const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces], 1)
@@ -17,7 +17,7 @@ const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces], 1)
 
 //const argsParser = manyJoin(myChainParser, sequenceOf([str(','), spaces], 1));
 const sep = sequenceOf([str(','), spaces], 1);
-const argsParser = manyJoin(myChainParser, sep);
+const argsParser = join([myChainParser, myChainParser, myChainParser, myChainParser, myChainParser], sep, 5);
 
 console.log(myChainParser.run('<word>wAOw yay'));
 

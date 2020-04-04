@@ -27,7 +27,7 @@ exports.sequenceOf = (parsers, min = -1) => new Parser_1.Parser(inputState => {
         psucceed++;
     }
     if (finalError && (psucceed < min || min === -1))
-        return ParserState_1.ParserState.errorify(nextState, () => `sequenceOf - parser n°${psucceed}: ${finalError}`);
+        return ParserState_1.ParserState.errorify(nextState, () => finalError);
     else
         return { ...nextState, index: lastIndex, result: results, error: null };
 });
@@ -75,18 +75,25 @@ exports.between = (left, right) => (content) => exports.sequenceOf([left, conten
  * Runs a sequence of parsers interconnected by a same parser.
  * @param parsers The parsers to run.
  * @param joiner The parser interconnecting the other parsers together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
+ * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
-exports.join = (parsers, joiner, joinResults = false) => {
+exports.join = (parsers, joiner, min = -1, joinResults = false) => {
     let joinedParsers = [];
     let starts = true;
-    for (const parser of parsers) {
+    for (let parser of parsers) {
         if (starts)
             starts = false;
-        else if (joinResults)
+        else if (joinResults) {
             joinedParsers.push(joiner);
+        }
+        else {
+            parser = exports.sequenceOf([joiner, parser])
+                .map(result => result[1]);
+        }
         joinedParsers.push(parser);
     }
-    return exports.sequenceOf(joinedParsers);
+    return exports.sequenceOf(joinedParsers, min);
 };
 /**
  * Runs a parser as many times as possible, interconnected by a same other parser.

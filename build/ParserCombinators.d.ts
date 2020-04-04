@@ -22,8 +22,10 @@ export declare const between: <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <
  * Runs a sequence of parsers interconnected by a same parser.
  * @param parsers The parsers to run.
  * @param joiner The parser interconnecting the other parsers together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
+ * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
-export declare const join: (parsers: Parser<any>[], joiner: Parser<any>, joinResults?: boolean) => Parser<any>;
+export declare const join: (parsers: Parser<any>[], joiner: Parser<any>, min?: number, joinResults?: boolean) => Parser<any>;
 /**
  * Runs a parser as many times as possible, interconnected by a same other parser.
  * @param parser The parser to run.

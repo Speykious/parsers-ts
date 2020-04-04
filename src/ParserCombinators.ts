@@ -26,9 +26,7 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 		}
 		
 		if (finalError && (psucceed < min || min === -1))
-			return ParserState.errorify(nextState, () =>
-				`sequenceOf - parser n°${psucceed}: ${finalError}`
-			);
+			return ParserState.errorify(nextState, () => finalError);
 		else return {...nextState, index: lastIndex, result: results, error: null};
 	});
 
@@ -95,11 +93,17 @@ export const join = (parsers: Parser<any>[], joiner: Parser<any>, min = -1, join
 	let joinedParsers = [];
 	let starts = true;
 
-	for (const parser of parsers) {
+	for (let parser of parsers) {
 		if (starts) starts = false;
-		else if (joinResults) joinedParsers.push(joiner);
+		else if (joinResults) {
+			joinedParsers.push(joiner);
+		} else {
+			parser = sequenceOf([joiner, parser])
+				.map(result => result[1]);
+		}
 		joinedParsers.push(parser);
 	}
+
 	return sequenceOf(joinedParsers, min);
 }
 
