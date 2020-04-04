@@ -14,21 +14,22 @@ exports.sequenceOf = (parsers, min = -1) => new Parser_1.Parser(inputState => {
     const results = [];
     let nextState = inputState;
     let finalError = null;
-    let pi = 0, psucceed = 0;
+    let psucceed = 0, lastIndex = 0;
     for (let parser of parsers) {
         nextState = parser.transformer(nextState);
         if (nextState.error) { // Catch errors
             psucceed--;
             finalError = nextState.error;
         }
+        else
+            lastIndex = nextState.index;
         results.push(nextState.result);
-        pi++;
         psucceed++;
     }
     if (finalError && (psucceed < min || min === -1))
-        return ParserState_1.ParserState.errorify(nextState, () => `sequenceOf - parser n°${pi}: ${finalError}`);
+        return ParserState_1.ParserState.errorify(nextState, () => `sequenceOf - parser n°${psucceed}: ${finalError}`);
     else
-        return ParserState_1.ParserState.resultify(nextState, results);
+        return { ...nextState, index: lastIndex, result: results, error: null };
 });
 /**
  * Runs the first parser that is successful.

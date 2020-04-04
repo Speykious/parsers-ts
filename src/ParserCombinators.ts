@@ -14,13 +14,13 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 
 		let nextState = inputState;
 		let finalError: string = null;
-		let psucceed = 0;
+		let psucceed = 0, lastIndex = 0;
 		for (let parser of parsers) {
 			nextState = parser.transformer(nextState);
 			if (nextState.error) { // Catch errors
 				psucceed--;
 				finalError = nextState.error;
-			}
+			} else lastIndex = nextState.index;
 			results.push(nextState.result);
 			psucceed++;
 		}
@@ -29,7 +29,7 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 			return ParserState.errorify(nextState, () =>
 				`sequenceOf - parser n°${psucceed}: ${finalError}`
 			);
-		else return ParserState.resultify(nextState, results);
+		else return {...nextState, index: lastIndex, result: results, error: null};
 	});
 
 /**
