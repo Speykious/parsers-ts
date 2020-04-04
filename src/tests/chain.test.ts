@@ -1,7 +1,8 @@
-import { Parser } from './Parser';
-import { str, word, spaces, digits } from './ParserCreators';
-import { sequenceOf, between, join } from './ParserCombinators';
+import { Parser } from '../Parser';
+import { str, word, spaces, digits } from '../ParserCreators';
+import { sequenceOf, between, join } from '../ParserCombinators';
 // import { colors } from './colors';
+
 
 const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces], 1)
 	.map(result => result[0] as string)

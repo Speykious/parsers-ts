@@ -6,17 +6,28 @@
   "types": "./maps",
   "scripts": {
     "start": "node .",
-    "test": "node ./build/test.js"
+    "test": "jest --config jestconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
   },
-  "author": "Speykious",
+  "files": [
+    "build/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Speykious/parsers-ts"
   },
+  "author": "Speykious",
   "license": "GPL-3.0",
   "private": false,
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "@types/node": "^13.9.8",
+    "jest": "^25.2.7",
+    "prettier": "^2.0.2",
+    "ts-jest": "^25.3.1",
+    "tslint": "^6.1.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3"
   }
 }
