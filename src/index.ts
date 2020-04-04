@@ -4,8 +4,8 @@ import * as Combinators from './ParserCombinators';
 import * as Creators from './ParserCreators';
 
 export const ParserTS = {
-	Creators,
-	Combinators,
-	Parser,
-	ParserState
-}
+  Creators,
+  Combinators,
+  Parser,
+  ParserState,
+};
