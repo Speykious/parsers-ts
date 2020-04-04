@@ -10,12 +10,19 @@ import { ParserState } from './ParserState';
 export const str = (s: string) =>
   new Parser((inputState) => {
     if (inputState.targetString.slice(inputState.index).startsWith(s))
-      return new ParserState(inputState.targetString, inputState.index + s.length, s);
+      return new ParserState(
+        inputState.targetString,
+        inputState.index + s.length,
+        s
+      );
     else
       return ParserState.errorify(
         inputState,
         (targetString, index = 0) =>
-          `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
+          `Tried to match "${s}", but got "${targetString.slice(
+            index,
+            s.length + index
+          )}" instead.`
       );
   });
 
@@ -26,12 +33,15 @@ export const str = (s: string) =>
 export const reg = (r: RegExp) => {
   const crx = `${colors.FgRed}/${r.source}/${r.flags}${colors.Reset}`;
   if (r.source[0] !== '^')
-    throw new Error(`The regex provided (${crx}) doesn't begin with ${colors.FgGreen}'^'${colors.Reset}.`);
+    throw new Error(
+      `The regex provided (${crx}) doesn't begin with ${colors.FgGreen}'^'${colors.Reset}.`
+    );
 
   return Parser.newStandard(
     r,
     (matchString) => matchString,
-    (targetString) => `'${targetString}' does not match with the regex /${r.source}/${r.flags}.`
+    (targetString) =>
+      `'${targetString}' does not match with the regex /${r.source}/${r.flags}.`
   );
 };
 

@@ -1,7 +1,9 @@
 import { ParserState, ErrorMsgProvider } from './ParserState';
 
 /** Transforms a ParserState into another ParserState. */
-export type ParserStateTransformer<TIn, TOut> = (inputState: ParserState<TIn>) => ParserState<TOut>;
+export type ParserStateTransformer<TIn, TOut> = (
+  inputState: ParserState<TIn>
+) => ParserState<TOut>;
 /**
  * Transforms a matched string into useful data.
  * The matched string is supposed to have all the properties
@@ -55,7 +57,8 @@ export class Parser<TOut> {
     return new Parser<TOut>((inputState) => {
       const nextState = this.transformer(inputState);
 
-      if (nextState.error) return ParserState.errorify(nextState, errorMsgProvider);
+      if (nextState.error)
+        return ParserState.errorify(nextState, errorMsgProvider);
 
       return nextState;
     }) as Parser<TOut>;
@@ -76,7 +79,8 @@ export class Parser<TOut> {
       else
         return ParserState.errorify(
           inputState,
-          (targetString, index) => `chain: function was unable to provide the next parser at index ${index}`
+          (targetString, index) =>
+            `chain: function was unable to provide the next parser at index ${index}`
         );
     });
   }
@@ -87,7 +91,11 @@ export class Parser<TOut> {
    * @param matchTransformer The function that transforms the matchString into organized data.
    * @param errorMsgProvider The function that returns an error message eventually using the targetString, and maybe the index.
    */
-  static newStandard<T>(regex: RegExp, matchTransformer: MatchTransformer<T>, errorMsgProvider: ErrorMsgProvider) {
+  static newStandard<T>(
+    regex: RegExp,
+    matchTransformer: MatchTransformer<T>,
+    errorMsgProvider: ErrorMsgProvider
+  ) {
     const standard = new Parser<T>((inputState) => {
       const { targetString, index, error } = inputState;
       if (error) return inputState; // Propagate the error
@@ -95,14 +103,21 @@ export class Parser<TOut> {
       // Handling unexpected end of input
       const slicedString = targetString.slice(index);
       if (slicedString.length === 0) {
-        return ParserState.errorify(inputState, (etargetString) => `Unexpected end of input ("${etargetString}").`);
+        return ParserState.errorify(
+          inputState,
+          (etargetString) => `Unexpected end of input ("${etargetString}").`
+        );
       }
 
       // The real goal of all of this >_<
       const match = slicedString.match(regex);
       if (match)
         // Success... Or not success? Hmmmmmmm <_<
-        return ParserState.update(inputState, index + match[0].length, matchTransformer(match[0]));
+        return ParserState.update(
+          inputState,
+          index + match[0].length,
+          matchTransformer(match[0])
+        );
       else return ParserState.errorify(inputState, errorMsgProvider);
     });
 

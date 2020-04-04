@@ -27,8 +27,10 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
       psucceed++;
     }
 
-    if (finalError && (psucceed < min || min === -1)) return ParserState.errorify(nextState, () => finalError);
-    else return { ...nextState, index: lastIndex, result: results, error: null };
+    if (finalError && (psucceed < min || min === -1))
+      return ParserState.errorify(nextState, () => finalError);
+    else
+      return { ...nextState, index: lastIndex, result: results, error: null };
   });
 
 /**
@@ -46,7 +48,8 @@ export const choice = (...parsers: Parser<any>[]) =>
 
     return ParserState.errorify(
       inputState,
-      (targetString, index) => `choice: unable to match with any parser at index ${index}`
+      (targetString, index) =>
+        `choice: unable to match with any parser at index ${index}`
     );
   });
 
@@ -76,10 +79,17 @@ export const many = (parser: Parser<any>, min = 0) =>
       );
     }
 
-    return new ParserState(nextState.targetString, nextState.index, results, null);
+    return new ParserState(
+      nextState.targetString,
+      nextState.index,
+      results,
+      null
+    );
   });
 //
-export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(content: Parser<T>) =>
+export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(
+  content: Parser<T>
+) =>
   sequenceOf([left, content, right]).map((results) => results[1]) as Parser<T>;
 
 /**
@@ -89,7 +99,12 @@ export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(cont
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
-export const join = (parsers: Parser<any>[], joiner: Parser<any>, min = -1, joinResults = false) => {
+export const join = (
+  parsers: Parser<any>[],
+  joiner: Parser<any>,
+  min = -1,
+  joinResults = false
+) => {
   const joinedParsers = [];
   let starts = true;
 
@@ -111,7 +126,12 @@ export const join = (parsers: Parser<any>[], joiner: Parser<any>, min = -1, join
  * @param parser The parser to run.
  * @param joiner The parser interconnecting the other parser together.
  */
-export const manyJoin = (parser: Parser<any>, joiner: Parser<any>, min = 0, joinResults = false) => {
+export const manyJoin = (
+  parser: Parser<any>,
+  joiner: Parser<any>,
+  min = 0,
+  joinResults = false
+) => {
   return new Parser((inputState) => {
     if (inputState.error) return inputState;
     const results: undefined[] = [];
@@ -143,6 +163,11 @@ export const manyJoin = (parser: Parser<any>, joiner: Parser<any>, min = 0, join
       );
     }
 
-    return new ParserState(nextState.targetString, nextState.index, results, null);
+    return new ParserState(
+      nextState.targetString,
+      nextState.index,
+      results,
+      null
+    );
   });
 };
