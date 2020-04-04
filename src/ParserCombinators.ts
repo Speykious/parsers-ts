@@ -114,6 +114,7 @@ export const manyJoin = (parser: Parser<any>, joiner: Parser<any>, min = 0, join
 		let nextState = inputState;
 		let done = false;
 		let starts = true;
+		let np = 0;
 		while (!done) {
 			if (starts) starts = false;
 			else {
@@ -123,10 +124,10 @@ export const manyJoin = (parser: Parser<any>, joiner: Parser<any>, min = 0, join
 			}
 			nextState = parser.transformer(nextState);
 			if (nextState.error) done = true;
-			else results.push(nextState.result);
+			else { results.push(nextState.result); np++; }
 		}
 	
-		if (results.length < min) {
+		if (np < min) {
 			return ParserState.errorify(inputState,
 				(targetString, index) => `many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`);
 		}
