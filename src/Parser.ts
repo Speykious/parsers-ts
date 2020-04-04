@@ -76,7 +76,7 @@ export class Parser<TOut> {
       else
         return ParserState.errorify(
           inputState,
-          (targetString, index) => `chain: function was unable to provide the next parser at index ${index}`,
+          (targetString, index) => `chain: function was unable to provide the next parser at index ${index}`
         );
     });
   }

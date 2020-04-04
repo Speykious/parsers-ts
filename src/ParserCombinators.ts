@@ -46,7 +46,7 @@ export const choice = (...parsers: Parser<any>[]) =>
 
     return ParserState.errorify(
       inputState,
-      (targetString, index) => `choice: unable to match with any parser at index ${index}`,
+      (targetString, index) => `choice: unable to match with any parser at index ${index}`
     );
   });
 
@@ -72,7 +72,7 @@ export const many = (parser: Parser<any>, min = 0) =>
       return ParserState.errorify(
         inputState,
         (targetString, index) =>
-          `many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`,
+          `many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`
       );
     }
 
@@ -139,7 +139,7 @@ export const manyJoin = (parser: Parser<any>, joiner: Parser<any>, min = 0, join
       return ParserState.errorify(
         inputState,
         (targetString, index) =>
-          `many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`,
+          `many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`
       );
     }
 

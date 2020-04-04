@@ -7,5 +7,5 @@ export const ParserTS = {
   Creators,
   Combinators,
   Parser,
-  ParserState,
+  ParserState
 };

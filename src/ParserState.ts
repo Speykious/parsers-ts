@@ -14,7 +14,7 @@ export class ParserState<TResult> {
     public targetString: string,
     public index: number = 0,
     public result: TResult = null,
-    public error: string = null,
+    public error: string = null
   ) {}
 
   /**
@@ -46,7 +46,7 @@ export class ParserState<TResult> {
       inputState.targetString,
       inputState.index,
       null,
-      errorMsgProvider(inputState.targetString, inputState.index),
+      errorMsgProvider(inputState.targetString, inputState.index)
     );
   }
 }

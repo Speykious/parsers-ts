@@ -15,7 +15,7 @@ export const str = (s: string) =>
       return ParserState.errorify(
         inputState,
         (targetString, index = 0) =>
-          `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`,
+          `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
       );
   });
 
@@ -31,7 +31,7 @@ export const reg = (r: RegExp) => {
   return Parser.newStandard(
     r,
     (matchString) => matchString,
-    (targetString) => `'${targetString}' does not match with the regex /${r.source}/${r.flags}.`,
+    (targetString) => `'${targetString}' does not match with the regex /${r.source}/${r.flags}.`
   );
 };
 
