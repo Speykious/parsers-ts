@@ -3,7 +3,7 @@ import { str, word, spaces, digits } from './ParserCreators';
 import { sequenceOf, many, manyJoin, between } from './ParserCombinators';
 // import { colors } from './colors';
 
-const myChainParser = sequenceOf(between(str('<'), str('>'))(word), spaces)
+const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces])
 	.map(result => result[0] as string)
 	.chain((result): Parser<string|number> => {
 		switch (result) {
@@ -13,7 +13,9 @@ const myChainParser = sequenceOf(between(str('<'), str('>'))(word), spaces)
 		}
 	})
 
-const argsParser = manyJoin(myChainParser, sequenceOf(str(','), many(spaces)));
+const argsParser = manyJoin(myChainParser,
+	sequenceOf([str(','), many(spaces)], 1)
+);
 
 console.log(myChainParser.run('<word>wAOw yay'));
-console.log(argsParser.run('<number> 123456, <word> wAOw, <word> incredible, <word> yeet, 0xf1g4b9fst4g9fs'));
+console.log(argsParser.run('<number> 123456, <word> wAOw,<word> incredible, <word> yeet, 0xf1g4b9fst4g9fs'));

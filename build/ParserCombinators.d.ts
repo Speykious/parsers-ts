@@ -1,9 +1,11 @@
 import { Parser } from './Parser';
 /**
  * Runs a sequence of parsers in order.
+ * Will return an error if the minimum amount of parsers didn't succeed.
  * @param parsers The parsers to run.
+ * @param min The minimum amount of parsers to succeed. Put -1 for all of them, but it is also the default value.
  */
-export declare const sequenceOf: (...parsers: Parser<any>[]) => Parser<any>;
+export declare const sequenceOf: (parsers: Parser<any>[], min?: number) => Parser<any>;
 /**
  * Runs the first parser that is successful.
  * @param parsers The parsers to run.

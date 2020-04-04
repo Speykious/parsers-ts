@@ -3,29 +3,33 @@ import { ParserState } from './ParserState';
 
 /**
  * Runs a sequence of parsers in order.
+ * Will return an error if the minimum amount of parsers didn't succeed.
  * @param parsers The parsers to run.
+ * @param min The minimum amount of parsers to succeed. Put -1 for all of them, but it is also the default value.
  */
-export const sequenceOf = (...parsers: Parser<any>[]) =>
+export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 	new Parser(inputState => {
 		if (inputState.error) return inputState;
 		const results: undefined[] = [];
 
 		let nextState = inputState;
 		let finalError: string = null;
-		let pi = 0;
+		let pi = 0, psucceed = 0;
 		for (let parser of parsers) {
 			nextState = parser.transformer(nextState);
-			if (nextState.error)	// Catch errors
+			if (nextState.error) { // Catch errors
+				psucceed--;
 				finalError = nextState.error;
+			}
 			results.push(nextState.result);
-			pi++;
+			pi++; psucceed++;
 		}
 		
-		return new ParserState(
-			nextState.targetString,
-			nextState.index, results,
-			finalError ? `sequenceOf - parser n°${pi}: ` + finalError : finalError
-		);
+		if (finalError && (psucceed < min || min === -1))
+			return ParserState.errorify(nextState, () =>
+				`sequenceOf - parser n°${pi}: ${finalError}`
+			);
+		else return ParserState.resultify(nextState, results);
 	});
 
 /**
@@ -41,7 +45,7 @@ export const choice = (...parsers: Parser<any>[]) =>
 			if (!nextState.error)
 				return nextState;
 		}
-		
+	
 		return ParserState.errorify(inputState,
 			(targetString, index) => `choice: unable to match with any parser at index ${index}`)
 	});
@@ -74,10 +78,10 @@ new Parser(inputState => {
 		nextState.index,
 		results, null);
 });
-
+// 
 export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) =>
 	<T>(content: Parser<T>) =>
-		sequenceOf(left, content, right)
+		sequenceOf([left, content, right])
 		.map(results => results[1]) as Parser<T>;
 
 /**
@@ -94,8 +98,7 @@ export const join = (parsers: Parser<any>[], joiner: Parser<any>, joinResults = 
 		else if (joinResults) joinedParsers.push(joiner);
 		joinedParsers.push(parser);
 	}
-
-	return sequenceOf(...joinedParsers);
+	return sequenceOf(joinedParsers);
 }
 
 /**

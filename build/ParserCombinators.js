@@ -4,23 +4,31 @@ const Parser_1 = require("./Parser");
 const ParserState_1 = require("./ParserState");
 /**
  * Runs a sequence of parsers in order.
+ * Will return an error if the minimum amount of parsers didn't succeed.
  * @param parsers The parsers to run.
+ * @param min The minimum amount of parsers to succeed. Put -1 for all of them, but it is also the default value.
  */
-exports.sequenceOf = (...parsers) => new Parser_1.Parser(inputState => {
+exports.sequenceOf = (parsers, min = -1) => new Parser_1.Parser(inputState => {
     if (inputState.error)
         return inputState;
     const results = [];
     let nextState = inputState;
     let finalError = null;
-    let pi = 0;
+    let pi = 0, psucceed = 0;
     for (let parser of parsers) {
         nextState = parser.transformer(nextState);
-        if (nextState.error) // Catch errors
+        if (nextState.error) { // Catch errors
+            psucceed--;
             finalError = nextState.error;
+        }
         results.push(nextState.result);
         pi++;
+        psucceed++;
     }
-    return new ParserState_1.ParserState(nextState.targetString, nextState.index, results, finalError ? `sequenceOf - parser n°${pi}: ` + finalError : finalError);
+    if (finalError && (psucceed < min || min === -1))
+        return ParserState_1.ParserState.errorify(nextState, () => `sequenceOf - parser n°${pi}: ${finalError}`);
+    else
+        return ParserState_1.ParserState.resultify(nextState, results);
 });
 /**
  * Runs the first parser that is successful.
@@ -59,7 +67,8 @@ exports.many = (parser, min = 0) => new Parser_1.Parser(inputState => {
     }
     return new ParserState_1.ParserState(nextState.targetString, nextState.index, results, null);
 });
-exports.between = (left, right) => (content) => exports.sequenceOf(left, content, right)
+// 
+exports.between = (left, right) => (content) => exports.sequenceOf([left, content, right])
     .map(results => results[1]);
 /**
  * Runs a sequence of parsers interconnected by a same parser.
@@ -76,7 +85,7 @@ exports.join = (parsers, joiner, joinResults = false) => {
             joinedParsers.push(joiner);
         joinedParsers.push(parser);
     }
-    return exports.sequenceOf(...joinedParsers);
+    return exports.sequenceOf(joinedParsers);
 };
 /**
  * Runs a parser as many times as possible, interconnected by a same other parser.

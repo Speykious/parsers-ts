@@ -3,7 +3,7 @@ import { Parser } from './Parser';
  * Creates a parser that matches a string.
  * @param s The string to match when parsing.
  */
-export declare const str: (s: string) => Parser<string>;
+export declare const str: (s: string) => Parser<any>;
 /**
  * Creates a parser that matches a regex.
  * @param r The regex to match when parsing.

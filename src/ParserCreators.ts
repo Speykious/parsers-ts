@@ -8,8 +8,9 @@ import { ParserState } from './ParserState';
  * @param s The string to match when parsing.
  */
 export const str = (s: string) => new Parser(inputState => {
-	if (inputState.targetString.startsWith(s))
-		return inputState;
+	if (inputState.targetString.slice(inputState.index).startsWith(s))
+		return new ParserState(inputState.targetString,
+			inputState.index + s.length, s);
 	else return ParserState.errorify(inputState, (targetString, index = 0) => `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`);
 })
 

@@ -3,11 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Parser_1 = require("./Parser");
 // import { ParserState } from './ParserState';
 const colors_1 = require("./colors");
+const ParserState_1 = require("./ParserState");
 /**
  * Creates a parser that matches a string.
  * @param s The string to match when parsing.
  */
-exports.str = (s) => Parser_1.Parser.newStandard(new RegExp(`^${s}`), matchString => matchString, (targetString, index = 0) => `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`);
+exports.str = (s) => new Parser_1.Parser(inputState => {
+    if (inputState.targetString.slice(inputState.index).startsWith(s))
+        return new ParserState_1.ParserState(inputState.targetString, inputState.index + s.length, s);
+    else
+        return ParserState_1.ParserState.errorify(inputState, (targetString, index = 0) => `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`);
+});
 /**
  * Creates a parser that matches a regex.
  * @param r The regex to match when parsing.
