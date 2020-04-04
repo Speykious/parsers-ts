@@ -88,8 +88,10 @@ export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) =>
  * Runs a sequence of parsers interconnected by a same parser.
  * @param parsers The parsers to run.
  * @param joiner The parser interconnecting the other parsers together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
+ * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
-export const join = (parsers: Parser<any>[], joiner: Parser<any>, joinResults = false) => {
+export const join = (parsers: Parser<any>[], joiner: Parser<any>, min = -1, joinResults = false) => {
 	let joinedParsers = [];
 	let starts = true;
 
@@ -98,7 +100,7 @@ export const join = (parsers: Parser<any>[], joiner: Parser<any>, joinResults = 
 		else if (joinResults) joinedParsers.push(joiner);
 		joinedParsers.push(parser);
 	}
-	return sequenceOf(joinedParsers);
+	return sequenceOf(joinedParsers, min);
 }
 
 /**
