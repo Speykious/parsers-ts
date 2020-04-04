@@ -1,15 +1,17 @@
 import { Parser } from './Parser';
 // import { ParserState } from './ParserState';
 import { colors } from './colors';
+import { ParserState } from './ParserState';
 
 /**
  * Creates a parser that matches a string.
  * @param s The string to match when parsing.
  */
-export const str = (s: string) => Parser.newStandard(new RegExp(`^${s}`),
-	matchString => matchString,
-	(targetString, index = 0) => `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
-);
+export const str = (s: string) => new Parser(inputState => {
+	if (inputState.targetString.startsWith(s))
+		return inputState;
+	else return ParserState.errorify(inputState, (targetString, index = 0) => `Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`);
+})
 
 /**
  * Creates a parser that matches a regex.
