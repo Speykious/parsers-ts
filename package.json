@@ -1,6 +1,6 @@
 {
   "name": "parsers-ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Making simple parsers in typescript.",
   "main": "./build/index.js",
   "types": "./maps",
