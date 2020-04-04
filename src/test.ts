@@ -1,6 +1,6 @@
 import { Parser } from './Parser';
 import { str, word, spaces, digits } from './ParserCreators';
-import { sequenceOf, many, manyJoin, between, join } from './ParserCombinators';
+import { sequenceOf, between, join } from './ParserCombinators';
 // import { colors } from './colors';
 
 const myChainParser = sequenceOf([between(str('<'), str('>'))(word), spaces], 1)
