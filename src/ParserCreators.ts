@@ -24,8 +24,8 @@ export const str = (s: string) =>
  * @param r The regex to match when parsing.
  */
 export const reg = (r: RegExp) => {
-  let crx = `${colors.FgRed}/${r.source}/${r.flags}${colors.Reset}`;
-  if (r.source[0] != '^')
+  const crx = `${colors.FgRed}/${r.source}/${r.flags}${colors.Reset}`;
+  if (r.source[0] !== '^')
     throw new Error(`The regex provided (${crx}) doesn't begin with ${colors.FgGreen}'^'${colors.Reset}.`);
 
   return Parser.newStandard(

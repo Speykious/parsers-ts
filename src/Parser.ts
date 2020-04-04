@@ -99,7 +99,7 @@ export class Parser<TOut> {
       }
 
       // The real goal of all of this >_<
-      let match = slicedString.match(regex);
+      const match = slicedString.match(regex);
       if (match)
         // Success... Or not success? Hmmmmmmm <_<
         return ParserState.update(inputState, index + match[0].length, matchTransformer(match[0]));

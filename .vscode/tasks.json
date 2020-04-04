@@ -4,33 +4,46 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Build and run",
+			"label": "Compile",
+			"detail": "Deletes all the files in the `build` folder to compile everything again using `tsc`.",
 			"type": "shell",
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": true,
-				"clear": true
-			},
-			"command": "rm build/*; yarn tsc; and yarn lint; yarn format; and yarn start",
+			"command": "rm build/*; yarn tsc",
 			"problemMatcher": [
 				"$eslint-stylish"
 			]
 		},
 		{
-			"label": "Build and test",
+			"label": "Run",
+			"detail": "Runs the `start` script. Doesn't do a lot of things for this particular project to be honest.",
 			"type": "shell",
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": true,
-				"clear": true
-			},
-			"command": "rm build/*; yarn tsc; and yarn lint; yarn format; yarn test",
+			"command": "yarn start",
+			"problemMatcher": [
+				"$eslint-stylish"
+			]
+		},
+		{
+			"label": "Jest: test",
+			"detail": "Runs every test present in the `tests` folder with Jest.",
+			"type": "shell",
+			"command": "yarn test",
+			"problemMatcher": [
+				"$eslint-stylish"
+			]
+		},
+		{
+			"label": "TSLint: lint",
+			"detail": "Lints all the code using TSLint.",
+			"type": "shell",
+			"command": "yarn lint",
+			"problemMatcher": [
+				"$eslint-stylish"
+			]
+		},
+		{
+			"label": "Prettier: format code",
+			"detail": "Formats all the code using Prettier.",
+			"type": "shell",
+			"command": "yarn format",
 			"problemMatcher": [
 				"$eslint-stylish"
 			]

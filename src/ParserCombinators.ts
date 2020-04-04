@@ -14,9 +14,9 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
 
     let nextState = inputState;
     let finalError: string = null;
-    let psucceed = 0,
-      lastIndex = 0;
-    for (let parser of parsers) {
+    let psucceed = 0;
+    let lastIndex = 0;
+    for (const parser of parsers) {
       nextState = parser.transformer(nextState);
       if (nextState.error) {
         // Catch errors
@@ -39,7 +39,7 @@ export const choice = (...parsers: Parser<any>[]) =>
   new Parser((inputState) => {
     if (inputState.error) return inputState;
 
-    for (let parser of parsers) {
+    for (const parser of parsers) {
       const nextState = parser.transformer(inputState);
       if (!nextState.error) return nextState;
     }
@@ -90,7 +90,7 @@ export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(cont
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
 export const join = (parsers: Parser<any>[], joiner: Parser<any>, min = -1, joinResults = false) => {
-  let joinedParsers = [];
+  const joinedParsers = [];
   let starts = true;
 
   for (let parser of parsers) {
