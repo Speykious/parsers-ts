@@ -43,5 +43,7 @@ export const word = reg(/^\w+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a word`);
 export const digits = reg(/^\d+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with digits`);
+export const num = digits.map(result => Number(result))
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a number`);
 export const newlines = reg(/^(\r?\n)+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with newlines`);
