@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "CommonJS",
-		"outDir": "build",
+		"outDir": "lib",
 		"rootDir": "src",
 
 		// "inlineSourceMap": true,

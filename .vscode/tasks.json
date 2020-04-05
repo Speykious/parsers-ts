@@ -7,7 +7,7 @@
 			"label": "Compile",
 			"detail": "Deletes all the files in the `build` folder to compile everything again using `tsc`.",
 			"type": "shell",
-			"command": "rm build/*; yarn tsc",
+			"command": "rm lib/*; yarn tsc",
 			"problemMatcher": [
 				"$eslint-stylish"
 			]

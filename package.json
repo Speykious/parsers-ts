@@ -2,8 +2,8 @@
   "name": "parsers-ts",
   "version": "2.0.0",
   "description": "Making simple parsers in typescript.",
-  "main": "./build/index.js",
-  "types": "./maps",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "start": "node .",
     "test": "jest --config jestconfig.json",
@@ -11,7 +11,7 @@
     "lint": "tslint -p tsconfig.json"
   },
   "files": [
-    "build/**/*"
+    "lib/**/*"
   ],
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 import { Parser } from '../src/Parser';
 import { str, word, spaces, digits } from '../src/ParserCreators';
-import { sequenceOf, between, join, manyJoin } from '../src/ParserCombinators';
+import { sequenceOf, between, manyJoin } from '../src/ParserCombinators';
 // import { colors } from './colors';
 
 test('Parser Combinator: chain', () => {
