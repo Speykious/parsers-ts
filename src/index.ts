@@ -1,11 +1,28 @@
-import { ParserState } from './ParserState';
-import { Parser } from './Parser';
-import * as Combinators from './ParserCombinators';
-import * as Creators from './ParserCreators';
+export {
+	ParserState,
+	ErrorMsgProvider
+} from './ParserState';
 
-export const ParserTS = {
-	Creators,
-	Combinators,
+export {
 	Parser,
-	ParserState
-};
+	MatchTransformer,
+	ParserStateTransformer
+} from './Parser';
+
+export {
+	between,
+	choice,
+	join,
+	many,
+	manyJoin,
+	sequenceOf
+} from './ParserCombinators';
+
+export {
+	digits,
+	newlines,
+	reg,
+	spaces,
+	str,
+	word
+} from './ParserCreators';
