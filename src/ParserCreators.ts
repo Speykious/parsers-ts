@@ -8,7 +8,7 @@ import { ParserState } from './ParserState';
  * @param s The string to match when parsing.
  */
 export const str = (s: string) =>
-	new Parser((inputState) => {
+	new Parser<string>((inputState) => {
 		if (inputState.targetString.slice(inputState.index).startsWith(s))
 			return new ParserState(inputState.targetString, inputState.index + s.length, s);
 		else
@@ -33,11 +33,15 @@ export const reg = (r: RegExp) => {
 	return Parser.newStandard(
 		r,
 		(matchString) => matchString,
-		(targetString) => `'${targetString}' does not match with the regex /${r.source}/${r.flags}.`
+		(targetString, index) => `'${targetString.slice(index)}' does not match with the regex /${r.source}/${r.flags}.`
 	);
 };
 
-export const spaces = reg(/^\s+/);
-export const word = reg(/^\w+/);
-export const digits = reg(/^\d+/);
-export const newlines = reg(/^(\r?\n)+/);
+export const spaces = reg(/^\s+/)
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with spaces`);
+export const word = reg(/^\w+/)
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a word`);
+export const digits = reg(/^\d+/)
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with digits`);
+export const newlines = reg(/^(\r?\n)+/)
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with newlines`);
