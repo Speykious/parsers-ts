@@ -1,16 +1,18 @@
-import { Parser } from './Parser';
+import { Parser, ParserTuple } from './Parser';
 import { ParserState } from './ParserState';
+import { tuple } from '.';
+
 
 /**
  * Runs a sequence of parsers in order.
  * Will return an error if the minimum amount of parsers didn't succeed.
- * @param parsers The parsers to run.
+ * @param parsers The parsers to run. Preferrably, use the tuple function instead of the array syntax to get the correct intellisense.
  * @param min The minimum amount of parsers to succeed. Put -1 for all of them, but it is also the default value.
  */
-export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
-	new Parser((inputState) => {
+export const sequenceOf = <T extends any[]>(parsers: ParserTuple<T>, min = -1) =>
+	new Parser<T>((inputState) => {
 		if (inputState.error) return inputState;
-		const results: undefined[] = [];
+		const results = [] as T;
 
 		let nextState = inputState;
 		let finalError: string = null;
@@ -36,8 +38,8 @@ export const sequenceOf = (parsers: Parser<any>[], min = -1) =>
  * Runs the first parser that is successful.
  * @param parsers The parsers to run.
  */
-export const choice = (...parsers: Parser<any>[]) =>
-	new Parser((inputState) => {
+export const choice = <T extends any[]>(...parsers: ParserTuple<T>) =>
+	new Parser<T[number]>((inputState) => {
 		if (inputState.error) return inputState;
 
 		for (const parser of parsers) {
@@ -56,10 +58,10 @@ export const choice = (...parsers: Parser<any>[]) =>
  * @param parser The parsers to run.
  * @param min The minimum amount of times to run the parser for it to be successful.
  */
-export const many = (parser: Parser<any>, min = 0) =>
-	new Parser((inputState) => {
+export const many = <T>(parser: Parser<T>, min = 0) =>
+	new Parser<T[]>((inputState) => {
 		if (inputState.error) return inputState;
-		const results: undefined[] = [];
+		const results: T[] = [];
 
 		let nextState = inputState;
 		let done = false;
@@ -81,7 +83,7 @@ export const many = (parser: Parser<any>, min = 0) =>
 	});
 //
 export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(content: Parser<T>) =>
-	sequenceOf([left, content, right]).map((results) => results[1]) as Parser<T>;
+	sequenceOf(tuple(left, content, right)).map((results) => results[1]) as Parser<T>;
 
 /**
  * Runs a sequence of parsers interconnected by a same parser.
@@ -90,13 +92,11 @@ export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(cont
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
-export const join = (
-	parsers: Parser<any>[],
-	joiner: Parser<any>,
-	min = -1,
-	joinResults = false
+export const join = <T extends any[], TP>(
+	parsers: ParserTuple<T>, joiner: Parser<TP>,
+	min = -1, joinResults = false
 ) => {
-	const joinedParsers = [];
+	const joinedParsers: ParserTuple<(T[keyof T]|TP)[]> = [];
 	let starts = true;
 
 	for (let parser of parsers) {
@@ -104,7 +104,7 @@ export const join = (
 		else if (joinResults) {
 			joinedParsers.push(joiner);
 		} else {
-			parser = sequenceOf([joiner, parser]).map((result) => result[1]);
+			parser = sequenceOf(tuple(joiner, parser)).map((result) => result[1]);
 		}
 		joinedParsers.push(parser);
 	}
@@ -117,13 +117,11 @@ export const join = (
  * @param parser The parser to run.
  * @param joiner The parser interconnecting the other parser together.
  */
-export const manyJoin = (
-	parser: Parser<any>,
-	joiner: Parser<any>,
-	min = 0,
-	joinResults = false
+export const manyJoin = <T, TP>(
+	parser: Parser<T>, joiner: Parser<TP>,
+	min = 0, joinResults = false
 ) => {
-	return new Parser((inputState) => {
+	return new Parser<(T|TP)[]>((inputState) => {
 		if (inputState.error) return inputState;
 		const results: undefined[] = [];
 

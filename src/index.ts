@@ -1,3 +1,5 @@
+export const tuple = <T extends any[]>(...data: T) => data;
+
 export {
 	ParserState,
 	ErrorMsgProvider
