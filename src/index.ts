@@ -27,5 +27,6 @@ export {
 	reg,
 	spaces,
 	str,
-	word
+	word,
+	letters
 } from './ParserCreators';

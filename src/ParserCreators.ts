@@ -41,6 +41,8 @@ export const spaces = reg(/^\s+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with spaces`);
 export const word = reg(/^\w+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a word`);
+export const letters = reg(/^[A-Za-z]+/)
+.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with letters`);
 export const digits = reg(/^\d+/)
 .mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with digits`);
 export const uint = digits.map(result => Number(result))
