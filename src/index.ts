@@ -22,6 +22,7 @@ export {
 
 export {
 	digits,
+	uint,
 	newlines,
 	reg,
 	spaces,
