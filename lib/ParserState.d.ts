@@ -26,7 +26,7 @@ export declare class ParserState<TResult> {
      * @param inputState The ParserState to update.
      * @param result The new result of the parsing.
      */
-    resultify<TOut>(result: TOut): ParserState<TOut>;
+    resultify<T>(result: T): ParserState<T>;
     /**
      * Returns an update of the inputState with a new error message.
      * @param inputState The ParserState to update.
