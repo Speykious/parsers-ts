@@ -38,6 +38,12 @@ export declare class Parser<TOut> {
      */
     mapError(errorMsgProvider: ErrorMsgProvider): Parser<TOut>;
     /**
+     * Creates a new parser that will filter the result of the previous parser.
+     * The error will remain the same as the previous one if it occured before passing through the filtering function, but it will be different if it passes through the filter.
+     * @param fn The function that filters the result.
+     */
+    filter(fn: (result: TOut) => boolean, filteringEMP: ErrorMsgProvider): Parser<TOut>;
+    /**
      * Chooses the next parser depending on the previous result.
      * @param fn The function that chooses the next parser.
      */
