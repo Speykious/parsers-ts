@@ -8,7 +8,8 @@ export {
 export {
 	Parser,
 	MatchTransformer,
-	ParserStateTransformer
+	ParserStateTransformer,
+	ParserTuple
 } from './Parser';
 
 export {
