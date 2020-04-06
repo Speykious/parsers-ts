@@ -52,13 +52,28 @@ export class Parser<TOut> {
 	 * @param fn The function that transforms the result.
 	 */
 	mapError(errorMsgProvider: ErrorMsgProvider) {
-		return new Parser<TOut>((inputState) => {
+		return new Parser<TOut>(inputState => {
 			const nextState = this.transformer(inputState);
 
 			if (nextState.error) return ParserState.errorify(nextState, errorMsgProvider);
 
 			return nextState;
 		});
+	}
+
+	/**
+	 * Creates a new parser that will filter the result of the previous parser.
+	 * The error will remain the same as the previous one if it occured before passing through the filtering function, but it will be different if it passes through the filter.
+	 * @param fn The function that filters the result.
+	 */
+	filter(fn: (result: TOut) => boolean, filteringEMP: ErrorMsgProvider) {
+		return new Parser<TOut>(inputState => {
+			const nextState = this.transformer(inputState);
+
+			if (!fn(nextState.result)) return ParserState.errorify(nextState, filteringEMP);
+
+			return nextState;
+		})
 	}
 
 	/**
