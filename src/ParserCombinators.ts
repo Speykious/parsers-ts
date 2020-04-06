@@ -10,7 +10,7 @@ import { tuple } from '.';
  * @param min The minimum amount of parsers to succeed. Put -1 for all of them, but it is also the default value.
  */
 export const sequenceOf = <T extends any[]>(parsers: ParserTuple<T>, min = -1) =>
-	new Parser<T>((inputState) => {
+	new Parser<T>(inputState => {
 		if (inputState.error) return inputState;
 		const results = [] as T;
 
@@ -30,8 +30,8 @@ export const sequenceOf = <T extends any[]>(parsers: ParserTuple<T>, min = -1) =
 		}
 
 		if (finalError && (psucceed < min || min === -1))
-			return ParserState.errorify(nextState, () => finalError);
-		else return { ...nextState, index: lastIndex, result: results, error: null };
+			return nextState.errorify(finalError);
+		else return nextState.update(lastIndex, results);
 	});
 
 /**
@@ -47,9 +47,8 @@ export const choice = <T extends any[]>(...parsers: ParserTuple<T>) =>
 			if (!nextState.error) return nextState;
 		}
 
-		return ParserState.errorify(
-			inputState,
-			(targetString, index) => `choice: unable to match with any parser at index ${index}`
+		return inputState.errorify(
+			`choice: unable to match with any parser at index ${inputState.index}`
 		);
 	});
 
@@ -72,10 +71,8 @@ export const many = <T>(parser: Parser<T>, min = 0) =>
 		}
 
 		if (results.length < min) {
-			return ParserState.errorify(
-				inputState,
-				(targetString, index) =>
-					`many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`
+			return inputState.errorify(
+				`many: Unable to match at least ${min} input(s) at index ${inputState.index}, matched ${results.length} instead`
 			);
 		}
 
@@ -121,9 +118,9 @@ export const manyJoin = <T, TP>(
 	parser: Parser<T>, joiner: Parser<TP>,
 	min = 0, joinResults = false
 ) => {
-	return new Parser<(T|TP)[]>((inputState) => {
+	return new Parser<(T|TP)[]>(inputState => {
 		if (inputState.error) return inputState;
-		const results: undefined[] = [];
+		const results: (T|TP)[] = [];
 
 		let nextState = inputState;
 		let done = false;
@@ -145,13 +142,11 @@ export const manyJoin = <T, TP>(
 		}
 
 		if (np < min) {
-			return ParserState.errorify(
-				inputState,
-				(targetString, index) =>
-					`many: Unable to match at least ${min} input(s) at index ${index}, matched ${results.length} instead`
+			return inputState.errorify(
+				`many: Unable to match at least ${min} input(s) at index ${inputState.index}, matched ${results.length} instead`
 			);
 		}
 
-		return new ParserState(nextState.targetString, nextState.index, results, null);
+		return nextState.resultify(results);
 	});
 };

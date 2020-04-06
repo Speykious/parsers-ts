@@ -20,17 +20,17 @@ export declare class ParserState<TResult> {
      * @param index The index of parsing.
      * @param result The result of the parsing.
      */
-    static update<T>(inputState: ParserState<T>, index: number, result: T): ParserState<T>;
+    update<T>(index: number, result: T): ParserState<T>;
     /**
      * Returns an update of the inputState with a new result.
      * @param inputState The ParserState to update.
      * @param result The new result of the parsing.
      */
-    static resultify<TIn, TOut>(inputState: ParserState<TIn>, result: TOut): ParserState<TOut>;
+    resultify<TOut>(result: TOut): ParserState<TOut>;
     /**
      * Returns an update of the inputState with a new error message.
      * @param inputState The ParserState to update.
      * @param errorMsgProvider What provides the error message.
      */
-    static errorify<T>(inputState: ParserState<T>, errorMsgProvider: ErrorMsgProvider): ParserState<T>;
+    errorify<T>(errorMsgProvider: ErrorMsgProvider | string): ParserState<T>;
 }
