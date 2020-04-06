@@ -29,7 +29,7 @@ test('Parser Combinator: chain', () => {
 
 	const runstate1 = myChainParser.run('<word>wAOw yay');
 	const runstate2 = argsParser.run(
-		'<number> 123456, <word>wAOw,<word>    incredible, <word> yeet yeet'
+		'<number> 666942013, <word>wAOw,<word>    incredible, <word> yeet yeet'
 	);
 
 	expect(runstate1.error).toBe(null);
