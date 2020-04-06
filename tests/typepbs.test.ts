@@ -1,7 +1,7 @@
-import { sequenceOf, uint, word } from "../src"
+import { sequenceOf, uint, word, tuple } from "../src"
 
 test('Testing types with sequenceOf', () => {
-	const someParsers = [uint, word, uint];
+	const someParsers = tuple(uint, word, uint);
 	const someSequence = sequenceOf(someParsers);
 	const state1 = someSequence.run('123yaaay321');
 

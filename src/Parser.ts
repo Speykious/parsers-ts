@@ -38,10 +38,10 @@ export class Parser<TOut> {
 	 * @param fn The function that transforms the result.
 	 */
 	map<T>(fn: (result: TOut) => T) {
-		return new Parser<TOut|T>((inputState) => {
+		return new Parser<T>((inputState) => {
 			const nextState = this.transformer(inputState);
 
-			if (nextState.error) return nextState;
+			if (nextState.error) return {...nextState, result: null};
 
 			return ParserState.resultify(nextState, fn(nextState.result));
 		});
