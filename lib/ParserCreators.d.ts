@@ -12,5 +12,5 @@ export declare const reg: (r: RegExp) => Parser<string>;
 export declare const spaces: Parser<string>;
 export declare const word: Parser<string>;
 export declare const digits: Parser<string>;
-export declare const num: Parser<string | number>;
+export declare const uint: Parser<string | number>;
 export declare const newlines: Parser<string>;
