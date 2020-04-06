@@ -21,7 +21,7 @@ export class Parser<TOut> {
 	 */
 	constructor(public transformer: ParserStateTransformer<any, TOut>) {}
 
-	static void = new Parser((state) => state);
+	static void = new Parser(state => state);
 
 	/**
 	 * Runs a parser by initiating a ParserState with the
@@ -116,7 +116,7 @@ export class Parser<TOut> {
 			// Handling unexpected end of input
 			const slicedString = targetString.slice(index);
 			if (slicedString.length === 0) {
-				return inputState.errorify(`Unexpected end of input ("${inputState.targetString}").`);
+				return inputState.errorify(`Unexpected end of input ("${targetString}").`);
 			}
 
 			// The real goal of all of this >_<

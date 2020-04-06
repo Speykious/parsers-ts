@@ -76,11 +76,14 @@ export const many = <T>(parser: Parser<T>, min = 0) =>
 			);
 		}
 
-		return new ParserState(nextState.targetString, nextState.index, results, null);
+		return nextState.resultify(results);
 	});
 //
-export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(content: Parser<T>) =>
-	sequenceOf(tuple(left, content, right)).map((results) => results[1]) as Parser<T>;
+export const between =
+<TL, TR>(left: Parser<TL>, right: Parser<TR>) =>
+	<T>(content: Parser<T>) =>
+		sequenceOf(tuple(left, content, right))
+		.map((results) => results[1]) as Parser<T>;
 
 /**
  * Runs a sequence of parsers interconnected by a same parser.
@@ -89,6 +92,8 @@ export const between = <TL, TR>(left: Parser<TL>, right: Parser<TR>) => <T>(cont
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default.
  */
+
+// 
 export const join = <T extends any[], TP>(
 	parsers: ParserTuple<T>, joiner: Parser<TP>,
 	min = -1, joinResults = false

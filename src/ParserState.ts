@@ -32,7 +32,7 @@ export class ParserState<TResult> {
 	 * @param inputState The ParserState to update.
 	 * @param result The new result of the parsing.
 	 */
-	resultify<TOut>(result: TOut): ParserState<TOut> {
+	resultify<T>(result: T): ParserState<T> {
 		return new ParserState(this.targetString, this.index, result);
 	}
 

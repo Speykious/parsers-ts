@@ -5,7 +5,7 @@ const pad = (
 	size: number,
 	padder: string = '0'
 ): string => {
-	n = n + '';
+	n = n.toString();
 	while (n.length < size)
 		n = padder + n;
 	return n;
