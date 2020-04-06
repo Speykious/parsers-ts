@@ -38,12 +38,13 @@ export class Parser<TOut> {
 	 * @param fn The function that transforms the result.
 	 */
 	map<T>(fn: (result: TOut) => T) {
-		return new Parser<T>((inputState) => {
+		return new Parser<T>(inputState => {
 			const nextState = this.transformer(inputState);
 
-			if (nextState.error) return {...nextState, result: null};
+			if (nextState.error)	// Seems tautologous, but types have to match!
+				return nextState.errorify(nextState.error);
 
-			return ParserState.resultify(nextState, fn(nextState.result));
+			return nextState.resultify(fn(nextState.result));
 		});
 	}
 
@@ -55,7 +56,8 @@ export class Parser<TOut> {
 		return new Parser<TOut>(inputState => {
 			const nextState = this.transformer(inputState);
 
-			if (nextState.error) return ParserState.errorify(nextState, errorMsgProvider);
+			if (nextState.error)
+				return nextState.errorify(errorMsgProvider);
 
 			return nextState;
 		});
@@ -70,7 +72,8 @@ export class Parser<TOut> {
 		return new Parser<TOut>(inputState => {
 			const nextState = this.transformer(inputState);
 
-			if (!fn(nextState.result)) return ParserState.errorify(nextState, filteringEMP);
+			if (!fn(nextState.result))
+				return nextState.errorify(filteringEMP);
 
 			return nextState;
 		})
@@ -89,10 +92,8 @@ export class Parser<TOut> {
 			const nextParser = fn(nextState.result);
 			if (nextParser) return nextParser.transformer(nextState);
 			else
-				return ParserState.errorify(
-					inputState,
-					(targetString, index) =>
-						`chain: function was unable to provide the next parser at index ${index}`
+				return inputState.errorify(
+						`chain: function was unable to provide the next parser at index ${inputState.index}`
 				);
 		});
 	}
@@ -115,18 +116,15 @@ export class Parser<TOut> {
 			// Handling unexpected end of input
 			const slicedString = targetString.slice(index);
 			if (slicedString.length === 0) {
-				return ParserState.errorify(
-					inputState,
-					(etargetString) => `Unexpected end of input ("${etargetString}").`
-				);
+				return inputState.errorify(`Unexpected end of input ("${inputState.targetString}").`);
 			}
 
 			// The real goal of all of this >_<
 			const match = slicedString.match(regex);
 			if (match)
 				// Success... Or not success? Hmmmmmmm <_<
-				return ParserState.update(inputState, index + match[0].length, matchTransformer(match[0]));
-			else return ParserState.errorify(inputState, errorMsgProvider);
+				return inputState.update(index + match[0].length, matchTransformer(match[0]));
+			else return inputState.errorify(errorMsgProvider);
 		});
 
 		return standard;

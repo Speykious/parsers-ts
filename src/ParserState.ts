@@ -23,8 +23,8 @@ export class ParserState<TResult> {
 	 * @param index The index of parsing.
 	 * @param result The result of the parsing.
 	 */
-	static update<T>(inputState: ParserState<T>, index: number, result: T): ParserState<T> {
-		return new ParserState(inputState.targetString, index, result);
+	update<T>(index: number, result: T): ParserState<T> {
+		return new ParserState(this.targetString, index, result);
 	}
 
 	/**
@@ -32,8 +32,8 @@ export class ParserState<TResult> {
 	 * @param inputState The ParserState to update.
 	 * @param result The new result of the parsing.
 	 */
-	static resultify<TIn, TOut>(inputState: ParserState<TIn>, result: TOut): ParserState<TOut> {
-		return new ParserState(inputState.targetString, inputState.index, result, inputState.error);
+	resultify<TOut>(result: TOut): ParserState<TOut> {
+		return new ParserState(this.targetString, this.index, result);
 	}
 
 	/**
@@ -41,12 +41,13 @@ export class ParserState<TResult> {
 	 * @param inputState The ParserState to update.
 	 * @param errorMsgProvider What provides the error message.
 	 */
-	static errorify<T>(inputState: ParserState<T>, errorMsgProvider: ErrorMsgProvider) {
+	errorify<T>(errorMsgProvider: ErrorMsgProvider | string) {
 		return new ParserState<T>(
-			inputState.targetString,
-			inputState.index,
+			this.targetString,
+			this.index,
 			null,
-			errorMsgProvider(inputState.targetString, inputState.index)
+			typeof errorMsgProvider === 'string' ?
+			errorMsgProvider : errorMsgProvider(this.targetString, this.index)
 		);
 	}
 }

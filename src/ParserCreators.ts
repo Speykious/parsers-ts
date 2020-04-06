@@ -12,10 +12,8 @@ export const str = (s: string) =>
 		if (inputState.targetString.slice(inputState.index).startsWith(s))
 			return new ParserState(inputState.targetString, inputState.index + s.length, s);
 		else
-			return ParserState.errorify(
-				inputState,
-				(targetString, index = 0) =>
-					`Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
+			return inputState.errorify((targetString, index) =>
+				`Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
 			);
 	});
 
@@ -30,8 +28,7 @@ export const reg = (r: RegExp) => {
 			`The regex provided (${crx}) doesn't begin with ${colors.FgGreen}'^'${colors.Reset}.`
 		);
 
-	return Parser.newStandard(
-		r,
+	return Parser.newStandard(r,
 		(matchString) => matchString,
 		(targetString, index) => `'${targetString.slice(index)}' does not match with the regex /${r.source}/${r.flags}.`
 	);
