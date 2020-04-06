@@ -1,12 +1,15 @@
-import { sequenceOf, uint, letters, tuple } from "../src"
+import { sequenceOf, uint, letters, tuple } from '../src'
 
 test('Testing types with sequenceOf', () => {
 	const someParsers = tuple(uint, letters, uint);
 	const someSequence = sequenceOf(someParsers);
-	const state1 = someSequence.run('123yaaay321');
+	const target = '123yaaay321';
+	const state1 = someSequence.run(target);
 
-	console.log(state1);
-	
-	expect(state1.error).toBe(null);
-	expect(state1.result).toEqual([123, 'yaaay', 321]);
+	expect(state1).toEqual({
+		targetString: target,
+		index: target.length,
+		result: [123, 'yaaay', 321],
+		error: null
+	});
 })
