@@ -19,7 +19,7 @@ export declare class Parser<TOut> {
      * @param transformer The ParserState transformer.
      */
     constructor(transformer: ParserStateTransformer<any, TOut>);
-    static void: Parser<any>;
+    static void: Parser<string>;
     /**
      * Runs a parser by initiating a ParserState with the
      * targetString and giving it as an input to the parser.
