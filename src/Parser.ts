@@ -21,7 +21,10 @@ export class Parser<TOut> {
 	 */
 	constructor(public transformer: ParserStateTransformer<any, TOut>) {}
 
-	static void = new Parser(state => state);
+	static void = Parser.newStandard(/.*/,
+		matchString => matchString,
+		() => `Wait, the void parser returns an error? How is that possible?`
+	)
 
 	/**
 	 * Runs a parser by initiating a ParserState with the
