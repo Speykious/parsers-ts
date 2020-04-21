@@ -2,7 +2,8 @@ export const tuple = <T extends any[]>(...data: T) => data;
 
 export {
 	ParserState,
-	ErrorMsgProvider
+	ErrorMsgProvider,
+	ParserError
 } from './ParserState';
 
 export {
@@ -22,12 +23,8 @@ export {
 } from './ParserCombinators';
 
 export {
-	digits,
-	uint,
-	newlines,
-	reg,
-	spaces,
-	str,
-	word,
-	letters
+	str, reg,
+	spaces, word, letters,
+	digits, uint, sint, sfloat,
+	newlines
 } from './ParserCreators';

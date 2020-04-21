@@ -4,7 +4,7 @@ export interface ParserError {
 }
 
 /** Provides an error message using the targetString and eventually the index. */
-export type ErrorMsgProvider = (<T>(state?: ParserState<T>) => ParserError) | string | ParserError;
+export type ErrorMsgProvider = (<T>(state?: ParserState<T>) => ParserError | string) | string | ParserError;
 
 /** A class about structures used by the Parser class. */
 export class ParserState<TResult> {
@@ -38,7 +38,11 @@ export class ParserState<TResult> {
 		let parserError: ParserError;
 		switch (typeof errorMsgProvider) {
 			case 'string': parserError = { info: errorMsgProvider }; break
-			case 'function': parserError = errorMsgProvider(this); break
+			case 'function':
+				let res = errorMsgProvider(this)
+				if (typeof res === 'string') parserError = { info: res }
+				else parserError = res;
+				break
 			default: parserError = errorMsgProvider; break
 		}
 		return new ParserState<T>(this.targetString, this.index, null, parserError);

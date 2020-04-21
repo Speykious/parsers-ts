@@ -1,20 +1,25 @@
 import { Parser } from './Parser';
 // import { ParserState } from './ParserState';
 import { colors } from './colors';
-import { ParserState } from './ParserState';
 
 /**
  * Creates a parser that matches a string.
  * @param s The string to match when parsing.
  */
 export const str = (s: string) =>
-	new Parser<string>((inputState) => {
+	new Parser<string>(inputState => {
 		if (inputState.targetString.slice(inputState.index).startsWith(s))
-			return new ParserState(inputState.targetString, inputState.index + s.length, s);
-		else
-			return inputState.errorify((targetString, index) =>
-				`Tried to match "${s}", but got "${targetString.slice(index, s.length + index)}" instead.`
-			);
+			return inputState.update(inputState.index + s.length, s);
+		else {
+			const match = inputState.targetString
+				.slice(inputState.index, s.length + inputState.index)
+			
+			return inputState.errorify({
+				info: `Tried to match "${s}", but got "${match}" instead.`,
+				match: match
+			});
+		}
+			
 	});
 
 /**
@@ -30,19 +35,26 @@ export const reg = (r: RegExp) => {
 
 	return Parser.newStandard(r,
 		(matchString) => matchString,
-		(targetString, index) => `'${targetString.slice(index)}' does not match with the regex /${r.source}/${r.flags}.`
+		from => `'${from.targetString.slice(from.index)}' does not match with the regex /${r.source}/${r.flags}.`
 	);
 };
 
 export const spaces = reg(/^\s+/)
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with spaces`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with spaces`);
 export const word = reg(/^\w+/)
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a word`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a word`);
 export const letters = reg(/^[A-Za-z]+/)
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with letters`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with letters`);
+
 export const digits = reg(/^\d+/)
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with digits`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with digits`);
 export const uint = digits.map(result => Number(result))
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with a number`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with an unsigned int`);
+export const sint = reg(/[+-]?\d+/).map(result => Number(result))
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed int`);
+export const sfloat = reg(/[+-]?\d*\.?\d+/).map(result => Number(result))
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed float`);
+
+
 export const newlines = reg(/^(\r?\n)+/)
-.mapError((targetString, index) => `'${targetString.slice(index)}' does not begin with newlines`);
+.mapError(from => `'${from.targetString.slice(from.index)}' does not begin with newlines`);

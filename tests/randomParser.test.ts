@@ -55,7 +55,7 @@ test('Random digits: no guess', () => {
 	const regnoguess = /attempt to guess/;
 	for (let i = 2; i < 10; i++)
 		expect(regnoguess.test(
-			randomDigits(i).run('').error
+			randomDigits(i).run('').error.info
 		)).toBe(true);
 })
 
@@ -63,7 +63,7 @@ test('Random digits: guess too short', () => {
 	const regtooshort = /too short/;
 	for (let i = 2; i < 10; i++)
 		expect(regtooshort.test(
-			randomDigits(i).run(getRandits(i-1)).error
+			randomDigits(i).run(getRandits(i-1)).error.info
 		)).toBe(true);
 })
 
@@ -71,7 +71,7 @@ test('Random digits: guess too long', () => {
 	const regtoolong = /too long/;
 	for (let i = 2; i < 10; i++)
 		expect(regtoolong.test(
-			randomDigits(i).run(getRandits(i+1)).error
+			randomDigits(i).run(getRandits(i+1)).error.info
 		)).toBe(true);
 })
 
@@ -83,7 +83,7 @@ test('Random digits: guess until correct', () => {
 	for (let i = 0; i < 100; i++) {
 		state = toGuess.run(pad(i, 2))
 		if (!state.result)
-			expect(wrong.test(state.error)).toBe(true);
+			expect(wrong.test(state.error.info)).toBe(true);
 		else break;
 	}
 
