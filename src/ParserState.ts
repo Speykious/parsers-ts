@@ -1,4 +1,4 @@
-interface ParserError {
+export interface ParserError {
 	info: string
 	[key: string]: any
 }
