@@ -6,30 +6,32 @@ Copyright (C)	2020	Speykious
 
 ## Summary
 
-* [ParserState](#ParserState)
-    * [ParserError](#ParserError)
-* [Parser](#Parser)
-    * [MatchTransformer](#MatchTransformer)
-    * [ParserStateTransformer](#ParserStateTransformer)
-    * [ParserTuple](#ParserTuple)
-* [Parser Combinators](#Parser Combinators)
-    * [between](#between)
-    * [choice](#choice)
-    * [join](#join)
-    * [many](#many)
-    * [manyJoin](#manyJoin)
-    * [sequenceOf](#sequenceOf)
-* [Parser Creators](#Parser Creators)
-    * [str](#str)
-    * [reg](#reg)
-    * [spaces](#spaces)
-    * [word](#word)
-    * [letters](#letters)
-    * [digits](#digits)
-    * [uint](#uint)
-    * [sint](#sint)
-    * [sfloat](#sfloat)
-    * [newlines](#newlines)
+- [Parsers-TS](#parsers-ts)
+  - [Summary](#summary)
+  - [ParserState](#parserstate)
+    - [ParserError](#parsererror)
+  - [Parser](#parser)
+    - [MatchTransformer](#matchtransformer)
+    - [ParserStateTransformer](#parserstatetransformer)
+    - [ParserTuple](#parsertuple)
+  - [Parser Combinators](#parser-combinators)
+    - [between](#between)
+    - [choice](#choice)
+    - [join](#join)
+    - [many](#many)
+    - [manyJoin](#manyjoin)
+    - [sequenceOf](#sequenceof)
+  - [Parser Creators](#parser-creators)
+    - [str](#str)
+    - [reg](#reg)
+    - [spaces](#spaces)
+    - [word](#word)
+    - [letters](#letters)
+    - [digits](#digits)
+    - [uint](#uint)
+    - [sint](#sint)
+    - [sfloat](#sfloat)
+    - [newlines](#newlines)
 
 
 
@@ -42,9 +44,7 @@ Copyright (C)	2020	Speykious
 ## Parser
 
 ### MatchTransformer
-
 ### ParserStateTransformer
-
 ### ParserTuple
 
 
@@ -63,22 +63,12 @@ Copyright (C)	2020	Speykious
 ## Parser Creators
 
 ### str
-
 ### reg
-
 ### spaces
-
 ### word
-
 ### letters
-
 ### digits
-
 ### uint
-
 ### sint
-
 ### sfloat
-
 ### newlines
-
