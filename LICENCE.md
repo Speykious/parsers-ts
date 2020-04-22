@@ -1,5 +1,5 @@
 Parsers-TS: a functional implementation of basic parsers in typescript.
-Forked from the __**Parser Combinators from Scratch**__ YouTube series from the channel *Low Level JavaScript*.
+Forked from the **Parser Combinators from Scratch** YouTube series from the channel *Low Level JavaScript*.
 Copyright (C)	2020	Speykious
 
 This program is free software: you can redistribute it and/or modify
