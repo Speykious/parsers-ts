@@ -1,7 +1,11 @@
 # Parsers-TS
 
 A basic parser library in typescript.
+
 Forked from the **Parser Combinators from Scratch** YouTube series from the channel *Low Level JavaScript*.
+
+Documentation coming soon.
+
 Copyright (C)	2020	Speykious
 
 ## Summary
