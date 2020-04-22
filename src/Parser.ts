@@ -55,7 +55,8 @@ export class Parser<TOut> {
 
 	/** Creates a new parser that will filter the result of the previous parser.
 	 * The error will remain the same as the previous one if it occured before passing through the filtering function, but it will be different if it passes through the filter.
-	 * @param fn The function that filters the result. */
+	 * @param fn The function that filters the result.
+	 * @param filteringEMP What provides the error message if the filter returns false. */
 	filter(fn: (result: TOut) => boolean, filteringEMP: ErrorMsgProvider) {
 		return new Parser<TOut>(inputState => {
 			const nextState = this.transformer(inputState);
@@ -123,4 +124,5 @@ export class Parser<TOut> {
 	}
 }
 
+/** An array of different generic parsers. */
 export type ParserTuple<T> = { [K in keyof T]: Parser<T[K]> };

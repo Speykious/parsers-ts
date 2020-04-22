@@ -1,11 +1,8 @@
 import { Parser } from './Parser';
-// import { ParserState } from './ParserState';
 import { colors } from './colors';
 
-/**
- * Creates a parser that matches a string.
- * @param s The string to match when parsing.
- */
+/** Creates a parser that matches a string.
+ * @param s The string to match when parsing. */
 export const str = (s: string) =>
 	new Parser<string>(inputState => {
 		if (inputState.targetString.slice(inputState.index).startsWith(s))
@@ -22,10 +19,8 @@ export const str = (s: string) =>
 			
 	});
 
-/**
- * Creates a parser that matches a regex.
- * @param r The regex to match when parsing.
- */
+/** Creates a parser that matches a regex.
+ * @param r The regex to match when parsing. */
 export const reg = (r: RegExp) => {
 	const crx = `${colors.FgRed}/${r.source}/${r.flags}${colors.Reset}`;
 	if (r.source[0] !== '^')
@@ -54,7 +49,6 @@ export const sint = reg(/[+-]?\d+/).map(result => Number(result))
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed int`);
 export const sfloat = reg(/[+-]?\d*\.?\d+/).map(result => Number(result))
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed float`);
-
 
 export const newlines = reg(/^(\r?\n)+/)
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with newlines`);

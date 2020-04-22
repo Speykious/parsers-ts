@@ -1,3 +1,4 @@
+/** Workaround for Typescript that infers tuple types. */
 export const tuple = <T extends any[]>(...data: T) => data;
 
 export {
