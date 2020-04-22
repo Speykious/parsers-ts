@@ -45,9 +45,9 @@ export const digits = reg(/^\d+/)
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with digits`);
 export const uint = digits.map(result => Number(result))
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with an unsigned int`);
-export const sint = reg(/[+-]?\d+/).map(result => Number(result))
+export const sint = reg(/^[+-]?\d+/).map(result => Number(result))
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed int`);
-export const sfloat = reg(/[+-]?\d*\.?\d+/).map(result => Number(result))
+export const sfloat = reg(/^[+-]?\d*\.?\d+/).map(result => Number(result))
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with a signed float`);
 
 export const newlines = reg(/^(\r?\n)+/)
