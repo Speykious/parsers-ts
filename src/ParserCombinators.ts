@@ -89,7 +89,7 @@ export const between =
 <TL, TR>(left: Parser<TL>, right: Parser<TR>) =>
 	<T>(content: Parser<T>) =>
 		sequenceOf(tuple(left, content, right))
-		.map((results) => results[1]) as Parser<T>;
+		.map(results => results[1]) as Parser<T>;
 
 /** Runs a sequence of parsers interconnected by a same parser.
  * @param parsers The parsers to run.
@@ -114,7 +114,8 @@ export const join = <T extends any[], TP>(
 		joinedParsers.push(parser);
 	}
 
-	return sequenceOf(joinedParsers, min);
+	return sequenceOf(joinedParsers, min)
+		.mapError(from => ({ ...from.error, combinator: 'join' }));
 };
 
 /** Runs a parser as many times as possible, interconnected by a same other parser.
