@@ -180,7 +180,8 @@ export const contextual =
 			if (!(nextParser instanceof Parser))
 				throw new Error('contextual: yielded values must always be parsers')
 			
-			return nextParser.chain(runStep) as Parser<TResult>
+			return nextParser.chain(runStep)
+				.mapError(state => ({ ...state.error, combinator: 'contextual' }))
 		}
 
 		return runStep()
