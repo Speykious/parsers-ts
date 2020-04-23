@@ -1,6 +1,7 @@
 import { Parser, ParserTuple } from './Parser';
-import { ParserError } from './ParserState';
+import { ParserError, ParserState } from './ParserState';
 import { tuple } from '.';
+import { succeed } from './ParserCreators';
 
 
 /** Runs a sequence of parsers in order.
@@ -162,3 +163,26 @@ export const manyJoin = <T, TP>(
 		return nextState.resultify(results);
 	});
 };
+
+export const contextual =
+<T, TResult>(generator: () => Generator<Parser<T>, TResult, T>): Parser<TResult> => {
+	return Parser.void.chain(() => {
+		const iterator = generator()
+
+		const runStep = (next?: T): Parser<TResult> => {
+			const iteration = iterator.next(next)
+
+			if (iteration.done)
+				return succeed(iteration.value)
+			
+			const nextParser = iteration.value
+
+			if (!(nextParser instanceof Parser))
+				throw new Error('contextual: yielded values must always be parsers')
+			
+			return nextParser.chain(runStep) as Parser<TResult>
+		}
+
+		return runStep()
+	}) as Parser<TResult>
+}
