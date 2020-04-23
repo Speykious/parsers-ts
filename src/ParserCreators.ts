@@ -52,3 +52,6 @@ export const sfloat = reg(/^[+-]?\d*\.?\d+/).map(result => Number(result))
 
 export const newlines = reg(/^(\r?\n)+/)
 .mapError(from => `'${from.targetString.slice(from.index)}' does not begin with newlines`);
+
+export const succeed = <T>(value: T) => 
+	Parser.void.map(() => value)
