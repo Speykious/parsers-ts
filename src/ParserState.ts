@@ -31,7 +31,7 @@ export class ParserState<TResult> {
 		return new ParserState(this.targetString, this.index, result);
 	}
 
-	/** Returns an update of the inputState with a new error message.
+	/** Returns an update of the inputState with a new ParserError.
 	 * @param inputState The ParserState to update.
 	 * @param errorMsgProvider What provides the error message. */
 	errorify<T>(errorMsgProvider: ErrorMsgProvider) {

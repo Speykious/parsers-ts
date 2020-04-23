@@ -71,10 +71,11 @@ export class Parser<TOut> {
 	/** Chooses the next parser depending on the previous result.
 	 * @param fn The function that chooses the next parser. */
 	chain<T>(fn: (result: TOut) => Parser<T>) {
-		return new Parser<TOut | T>((inputState) => {
+		return new Parser<T>(inputState => {
 			const nextState = this.transformer(inputState);
 
-			if (nextState.error) return nextState;
+			if (nextState.error)
+				return nextState.errorify(nextState.error);
 
 			const nextParser = fn(nextState.result);
 			if (nextParser) return nextParser.transformer(nextState);
@@ -84,9 +85,7 @@ export class Parser<TOut> {
 					combinator: 'chain',
 					result: nextState.result,
 					index: inputState.index
-				}
-						
-				);
+				});
 		});
 	}
 
