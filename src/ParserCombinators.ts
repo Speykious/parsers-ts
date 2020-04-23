@@ -164,6 +164,7 @@ export const manyJoin = <T, TP>(
 	});
 };
 
+/** Lets you make a flattened version of the chain method using yields. */
 export const contextual =
 <T, TResult>(generator: () => Generator<Parser<T>, TResult, T>): Parser<TResult> => {
 	return Parser.void.chain(() => {
@@ -176,7 +177,6 @@ export const contextual =
 				return succeed(iteration.value)
 			
 			const nextParser = iteration.value
-
 			if (!(nextParser instanceof Parser))
 				throw new Error('contextual: yielded values must always be parsers')
 			
@@ -185,5 +185,28 @@ export const contextual =
 		}
 
 		return runStep()
-	}) as Parser<TResult>
+	})
+}
+
+/** Same as contextual, but you yield ParserStates instead. */
+export const stateContextual =
+<T, TResult>(generator: () => Generator<Parser<T>, ParserState<TResult>, ParserState<T>>): Parser<TResult> => {
+	return new Parser(inputState => {
+		const iterator = generator()
+
+		const transformStep = (next: ParserState<T>): ParserState<TResult> => {
+			const iteration = iterator.next(next)
+
+			if (iteration.done)
+				return iteration.value
+			
+			const nextParser = iteration.value as Parser<T>
+			if (!(nextParser instanceof Parser))
+				throw new Error('stateContextual: yielded values must always be parsers')
+			
+			return transformStep(nextParser.transformer(next))
+		}
+
+		return transformStep(inputState)
+	})
 }

@@ -86,7 +86,6 @@ test('Random digits: guess until correct', () => {
 			expect(wrong.test(state.error.info)).toBe(true);
 		else break;
 	}
-
-	console.log(state);
+	
 	expect(/finally got it right/.test(state.result[0])).toBe(true);
 })
