@@ -20,12 +20,13 @@ export {
 	join,
 	many,
 	manyJoin,
-	sequenceOf
+	sequenceOf,
+	contextual
 } from './ParserCombinators';
 
 export {
 	str, reg,
 	spaces, word, letters,
 	digits, uint, sint, sfloat,
-	newlines
+	newlines, succeed
 } from './ParserCreators';
