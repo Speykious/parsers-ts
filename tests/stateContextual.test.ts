@@ -23,10 +23,14 @@ test('The Great State-Contextual Parser', () => {
 	const state5 = greatParser.run('Hello World!')
 
 	expect(state1.result).toBe('First nope.')
-	expect(state1.result).toBe('Second nope.')
-	expect(state1.result).toBe('Third nope.')
-	expect(state1.result).toBe('Third nope.')
-	expect(state1.result).toEqual(['Hello', ' ', 'World!'])
-	
-	console.log(state1, state2, state3, state4, state5)
+	expect(state2.result).toBe('Second nope.')
+	expect(state3.result).toBe('Third nope.')
+	expect(state4.result).toBe('Third nope.')
+	expect(state5.result).toEqual(['Hello', ' ', 'World!'])
+
+	expect(state1.error).toBe(null)
+	expect(state2.error).toBe(null)
+	expect(state3.error).toBe(null)
+	expect(state4.error).toBe(null)
+	expect(state5.error).toBe(null)
 })
