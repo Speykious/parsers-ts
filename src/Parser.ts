@@ -20,6 +20,8 @@ export class Parser<TOut> {
 		`Wait, the void parser returns an error? How is that possible?`
 	)
 
+	static nothing = new Parser(state => state)
+
 	/** Runs a parser by initiating a ParserState with the
 	 * targetString and giving it as an input to the parser.
 	 * @param targetString The target string to run the parser on. */
