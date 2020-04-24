@@ -101,7 +101,7 @@ export const join = <T extends any[], TP>(
 	parsers: ParserTuple<T>, joiner: Parser<TP>,
 	min = -1, joinResults = false
 ) => {
-	const joinedParsers: ParserTuple<(T[keyof T]|TP)[]> = [];
+	const joinedParsers: ParserTuple<(T[number]|TP)[]> = [];
 	let starts = true;
 
 	for (let parser of parsers) {
