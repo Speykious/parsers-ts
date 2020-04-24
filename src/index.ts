@@ -18,8 +18,10 @@ export {
 	between,
 	choice,
 	join,
+	joinWJR,
 	many,
 	manyJoin,
+	manyJoinWJR,
 	sequenceOf,
 	contextual
 } from './ParserCombinators';
