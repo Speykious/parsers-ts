@@ -92,21 +92,25 @@ export const between =
 		sequenceOf(tuple(left, content, right))
 		.map(results => results[1]) as Parser<T>;
 
+
+
+
+
 /** Runs a sequence of parsers interconnected by a same parser.
  * @param parsers The parsers to run.
  * @param joiner The parser interconnecting the other parsers together.
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default. */
-export const join = <T extends any[], TP>(
+const __join = <T extends any[], TP>(
 	parsers: ParserTuple<T>, joiner: Parser<TP>,
-	min = -1, joinResults = false
+	min = -1, joinResults: boolean
 ) => {
 	const joinedParsers: ParserTuple<(T[number]|TP)[]> = [];
 	let starts = true;
 
 	for (let parser of parsers) {
 		if (starts) starts = false;
-		else if (joinResults) {
+		else if (joinResults === true as true) {
 			joinedParsers.push(joiner);
 		} else {
 			parser = sequenceOf(tuple(joiner, parser))
@@ -119,12 +123,32 @@ export const join = <T extends any[], TP>(
 		.mapError(from => ({ ...from.error, combinator: 'join' }));
 };
 
+/** Runs a sequence of parsers interconnected by a same parser.
+ * Doesn't include the results of the joiner parsers.
+ * @param parsers The parsers to run.
+ * @param joiner The parser interconnecting the other parsers together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value. */
+export const join = <T extends any[], TP>(
+	parsers: ParserTuple<T>, joiner: Parser<TP>,
+	min = -1
+) => __join(parsers, joiner, min, false) as Parser<T>
+
+/** Runs a sequence of parsers interconnected by a same parser.
+ * Includes the results of the joiner parsers.
+ * @param parsers The parsers to run.
+ * @param joiner The parser interconnecting the other parsers together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value. */
+export const joinWJR = <T extends any[], TP>(
+	parsers: ParserTuple<T>, joiner: Parser<TP>,
+	min = -1
+) => __join(parsers, joiner, min, true)
+
 /** Runs a parser as many times as possible, interconnected by a same other parser.
  * @param parser The parser to run.
  * @param joiner The parser interconnecting the other parser together.
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default. */
-export const manyJoin = <T, TP>(
+const __manyJoin = <T, TP>(
 	parser: Parser<T>, joiner: Parser<TP>,
 	min = 0, joinResults = false
 ) => {
@@ -163,6 +187,28 @@ export const manyJoin = <T, TP>(
 		return nextState.resultify(results);
 	});
 };
+
+/** Runs a parser as many times as possible, interconnected by a same other parser.
+ * Doesn't include the results of the joiner parsers.
+ * @param parser The parser to run.
+ * @param joiner The parser interconnecting the other parser together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value. */
+export const manyJoin = <T, TP>(
+	parser: Parser<T>, joiner: Parser<TP>, min = 0
+) => __manyJoin(parser, joiner, min, false) as Parser<T[]>
+
+/** Runs a parser as many times as possible, interconnected by a same other parser.
+ * Includes the results of the joiner parsers.
+ * @param parser The parser to run.
+ * @param joiner The parser interconnecting the other parser together.
+ * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value. */
+export const manyJoinWJR = <T, TP>(
+	parser: Parser<T>, joiner: Parser<TP>, min = 0
+) => __manyJoin(parser, joiner, min, true)
+
+
+
+
 
 /** Lets you make a flattened version of the chain method using yields. */
 export const contextual =
