@@ -234,7 +234,7 @@ export const contextual =
 	})
 }
 
-/** Same as contextual, but you yield ParserStates instead. */
+/** Same as contextual, but you get ParserStates from yielded Parsers instead. */
 export const stateContextual =
 <T, TResult>(generator: () => Generator<Parser<T>, ParserState<TResult>, ParserState<T>>): Parser<TResult> => {
 	return new Parser(inputState => {
