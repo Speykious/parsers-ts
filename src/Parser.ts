@@ -126,4 +126,4 @@ export class Parser<TOut> {
 }
 
 /** An array of different generic parsers. */
-export type ParserTuple<T> = { [K in keyof T]: Parser<T[K]> };
+export type ParserTuple<T extends any[]> = { [K in keyof T]: Parser<T[K]> };
