@@ -1,6 +1,7 @@
 {
   "proseWrap": "never",
   "trailingComma": "none",
-  "singleQuote": true,
-  "useTabs": true
+  "singleQuote": false,
+  "useTabs": true,
+  "semi": false
 }
