@@ -29,7 +29,7 @@ export class Parser<TOut> {
 	 * targetString and giving it as an input to the parser.
 	 * @param targetString The target string to run the parser on. */
 	run(targetString: string) {
-		return this.transformer(new ParserState(targetString))
+		return this.transformer(new ParserState({ targetString }))
 	}
 
 	/** Creates a new parser that will transform the result of the previous parser.

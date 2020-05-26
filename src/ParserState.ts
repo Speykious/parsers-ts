@@ -11,25 +11,43 @@ export type ErrorMsgProvider =
 
 /** A class about structures used by the Parser class. */
 export class ParserState<TResult> {
+	public targetString: string
+	public index: number
+	public result: TResult
+	public error: ParserError
+
 	/** Creates a ParserState object. */
-	constructor(
-		public targetString: string,
-		public index: number = 0,
-		public result?: TResult,
-		public error?: ParserError
-	) {}
+	constructor(args: {
+		targetString: string
+		index?: number
+		result?: TResult
+		error?: ParserError
+	}) {
+		this.targetString = args.targetString
+		this.index = args.index ? args.index : 0
+		this.result = args.result
+		this.error = args.error
+	}
 
 	/** Returns an update of the inputState without modifying the inputState.
 	 * @param index The index of parsing.
 	 * @param result The result of the parsing. */
 	update<T>(index: number, result: T): ParserState<T> {
-		return new ParserState(this.targetString, index, result)
+		return new ParserState({
+			targetString: this.targetString,
+			index,
+			result
+		})
 	}
 
 	/** Returns an update of the inputState with a new result.
 	 * @param result The new result of the parsing. */
 	resultify<T>(result: T): ParserState<T> {
-		return new ParserState(this.targetString, this.index, result)
+		return new ParserState({
+			targetString: this.targetString,
+			index: this.index,
+			result
+		})
 	}
 
 	/** Returns an update of the inputState with a new ParserError.
@@ -49,11 +67,11 @@ export class ParserState<TResult> {
 				parserError = errorMsgProvider
 				break
 		}
-		return new ParserState<T>(
-			this.targetString,
-			this.index,
-			undefined,
-			parserError
-		)
+
+		return new ParserState<T>({
+			targetString: this.targetString,
+			index: this.index,
+			error: parserError
+		})
 	}
 }
