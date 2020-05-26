@@ -67,7 +67,7 @@ export class Parser<TOut> {
 			const nextState = this.transformer(inputState)
 
 			if (!fn(nextState.result))
-				return nextState.update(inputState.index, null).errorify(filteringEMP)
+				return nextState.update(inputState.index, undefined).errorify(filteringEMP)
 
 			return nextState
 		})

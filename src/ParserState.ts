@@ -15,12 +15,11 @@ export class ParserState<TResult> {
 	constructor(
 		public targetString: string,
 		public index: number = 0,
-		public result: TResult = null,
-		public error: ParserError = null
+		public result?: TResult,
+		public error?: ParserError
 	) {}
 
 	/** Returns an update of the inputState without modifying the inputState.
-	 * @param inputState The ParserState to update.
 	 * @param index The index of parsing.
 	 * @param result The result of the parsing. */
 	update<T>(index: number, result: T): ParserState<T> {
@@ -28,14 +27,12 @@ export class ParserState<TResult> {
 	}
 
 	/** Returns an update of the inputState with a new result.
-	 * @param inputState The ParserState to update.
 	 * @param result The new result of the parsing. */
 	resultify<T>(result: T): ParserState<T> {
 		return new ParserState(this.targetString, this.index, result)
 	}
 
 	/** Returns an update of the inputState with a new ParserError.
-	 * @param inputState The ParserState to update.
 	 * @param errorMsgProvider What provides the error message. */
 	errorify<T>(errorMsgProvider: ErrorMsgProvider) {
 		let parserError: ParserError
@@ -52,6 +49,6 @@ export class ParserState<TResult> {
 				parserError = errorMsgProvider
 				break
 		}
-		return new ParserState<T>(this.targetString, this.index, null, parserError)
+		return new ParserState<T>(this.targetString, this.index, undefined, parserError)
 	}
 }

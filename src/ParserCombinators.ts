@@ -16,7 +16,7 @@ export const sequenceOf = <T extends any[]>(
 		const results = [] as T
 
 		let nextState = inputState
-		let finalError: ParserError = null
+		let finalError: ParserError
 		let psucceed = 0
 		let lastIndex = 0
 		for (const parser of parsers) {

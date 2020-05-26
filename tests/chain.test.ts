@@ -21,18 +21,18 @@ test("Parser Combinator: chain", () => {
 			(result): Parser<any> => {
 				switch (result) {
 					case "word":
-						return word.map((result) => ({ type: "word", value: result }))
+						return word.map((respar) => ({ type: "word", value: respar }))
 					case "number":
-						return digits.map((result) => ({
+						return digits.map((respar) => ({
 							type: "number",
-							value: Number(result)
+							value: Number(respar)
 						}))
 					// default: return Parser.void;
 				}
 			}
 		)
 
-	//const argsParser = manyJoin(myChainParser, sequenceOf([str(','), spaces], 1));
+	// const argsParser = manyJoin(myChainParser, sequenceOf([str(','), spaces], 1));
 	const sep = sequenceOf(tuple(str(","), spaces), 1)
 	const argsParser = manyJoin(myChainParser, sep, 5)
 
@@ -41,6 +41,6 @@ test("Parser Combinator: chain", () => {
 		"<number> 666942013, <word>wAOw,<word>    incredible, <word> yeet yeet"
 	)
 
-	expect(runstate1.error).toBe(null)
-	expect(runstate2.error).not.toBe(null)
+	expect(runstate1.error).toBe(undefined)
+	expect(runstate2.error).not.toBe(undefined)
 })

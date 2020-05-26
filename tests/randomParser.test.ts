@@ -38,8 +38,8 @@ const randomDigits = (length: number) => {
 	})
 }
 
-test("Random digits: null length", () => {
-	let error: string = null
+test("Random digits: undefined length", () => {
+	let error: string
 
 	try {
 		randomDigits(0).run("something")

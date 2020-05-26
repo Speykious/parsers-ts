@@ -5,5 +5,5 @@ test("Parser.void test", () => {
 
 	expect(state.result).toBe('-*/0++ qfà-&"')
 	expect(state.index).toBe(13)
-	expect(state.error).toBe(null)
+	expect(state.error).toBe(undefined)
 })

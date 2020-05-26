@@ -10,6 +10,6 @@ test("Testing types with sequenceOf", () => {
 		targetString: target,
 		index: target.length,
 		result: [123, "yaaay", 321],
-		error: null
+		error: undefined
 	})
 })
