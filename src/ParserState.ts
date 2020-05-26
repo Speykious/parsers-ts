@@ -49,6 +49,11 @@ export class ParserState<TResult> {
 				parserError = errorMsgProvider
 				break
 		}
-		return new ParserState<T>(this.targetString, this.index, undefined, parserError)
+		return new ParserState<T>(
+			this.targetString,
+			this.index,
+			undefined,
+			parserError
+		)
 	}
 }
