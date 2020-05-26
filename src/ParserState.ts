@@ -39,7 +39,7 @@ export class ParserState<TResult> {
 		switch (typeof errorMsgProvider) {
 			case 'string': parserError = { info: errorMsgProvider }; break
 			case 'function':
-				let res = errorMsgProvider(this)
+				const res = errorMsgProvider(this)
 				if (typeof res === 'string') parserError = { info: res }
 				else parserError = res;
 				break

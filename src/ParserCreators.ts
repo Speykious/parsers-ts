@@ -1,5 +1,4 @@
 import { Parser } from './Parser';
-import { colors } from './colors';
 
 /** Creates a parser that matches a string.
  * @param s The string to match when parsing. */
@@ -13,7 +12,7 @@ export const str = (s: string) =>
 			
 			return inputState.errorify({
 				info: `Tried to match "${s}", but got "${match}" instead.`,
-				match: match
+				match
 			});
 		}
 			
@@ -22,10 +21,10 @@ export const str = (s: string) =>
 /** Creates a parser that matches a regex.
  * @param r The regex to match when parsing. */
 export const reg = (r: RegExp) => {
-	const crx = `${colors.FgRed}/${r.source}/${r.flags}${colors.Reset}`;
+	const crx = `/${r.source}/${r.flags}`;
 	if (r.source[0] !== '^')
 		throw new Error(
-			`The regex provided (${crx}) doesn't begin with ${colors.FgGreen}'^'${colors.Reset}.`
+			`The regex provided (${crx}) doesn't begin with '^'.`
 		);
 
 	return Parser.newStandard(r,

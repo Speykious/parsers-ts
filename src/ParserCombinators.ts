@@ -101,6 +101,7 @@ export const between =
  * @param joiner The parser interconnecting the other parsers together.
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default. */
+// tslint:disable-next-line: variable-name
 const __join = <T extends any[], TP>(
 	parsers: ParserTuple<T>, joiner: Parser<TP>,
 	min = -1, joinResults: boolean
@@ -148,6 +149,7 @@ export const joinWJR = <T extends any[], TP>(
  * @param joiner The parser interconnecting the other parser together.
  * @param min The minimum amount of parsers to be successful (joiners excluded). Enter -1 for all of them, although it is already the default value.
  * @param joinResults Whether to include the results of the joiner parsers in the final array of results or not, false by default. */
+// tslint:disable-next-line: variable-name
 const __manyJoin = <T, TP>(
 	parser: Parser<T>, joiner: Parser<TP>,
 	min = 0, joinResults = false

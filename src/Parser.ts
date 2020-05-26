@@ -109,7 +109,7 @@ export class Parser<TOut> {
 			if (slicedString.length === 0) {
 				return inputState.errorify({
 					info: `Unexpected end of input.`,
-					targetString: targetString
+					targetString
 				});
 			}
 
