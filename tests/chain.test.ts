@@ -12,6 +12,7 @@ import {
 // import { colors } from './colors';
 
 test("Parser Combinator: chain", () => {
+	//    myChainParser -> [ "<" ~ word ~ ">" .? spaces ]
 	const myChainParser = sequenceOf(
 		tuple(between(str("<"), str(">"))(word), spaces),
 		1
@@ -32,8 +33,10 @@ test("Parser Combinator: chain", () => {
 			}
 		)
 
-	// const argsParser = manyJoin(myChainParser, sequenceOf([str(','), spaces], 1));
+	//    spaces -> /\s+/
+	//    sep -> [ "," .? spaces ]
 	const sep = sequenceOf(tuple(str(","), spaces), 1)
+	//    argsParser -> myChainParser :sep: 5
 	const argsParser = manyJoin(myChainParser, sep, 5)
 
 	const runstate1 = myChainParser.run("<word>wAOw yay")

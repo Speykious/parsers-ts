@@ -4,11 +4,7 @@ const pad = (
 	n: number | string,
 	size: number,
 	padder: string = "0"
-): string => {
-	n = n.toString()
-	while (n.length < size) n = padder + n
-	return n
-}
+): string => n.toString().padStart(size, padder)
 
 const getRandits = (length: number) =>
 	pad(Math.floor(Math.random() * Math.pow(10, length)), length)

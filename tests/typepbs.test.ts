@@ -2,6 +2,7 @@ import { sequenceOf, uint, letters, tuple } from "../src"
 
 test("Testing types with sequenceOf", () => {
 	const someParsers = tuple(uint, letters, uint)
+	//    someSequence = [ uint letters uint ]
 	const someSequence = sequenceOf(someParsers)
 	const target = "123yaaay321"
 	const state1 = someSequence.run(target)
