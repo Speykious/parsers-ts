@@ -65,6 +65,7 @@ export class Parser<TOut> {
 	filter(fn: (result: TOut) => boolean, filteringEMP: ErrorMsgProvider) {
 		return new Parser<TOut>((inputState) => {
 			const nextState = this.transformer(inputState)
+			if (nextState.error) return nextState;
 
 			if (!fn(nextState.result))
 				return nextState
