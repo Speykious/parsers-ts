@@ -2,8 +2,8 @@ import { ParserState, ErrorMsgProvider } from "./ParserState"
 
 /** Transforms a ParserState into another ParserState. */
 export type ParserStateTransformer<TIn, TOut> = (
-	inputState: ParserState<TIn>
-) => ParserState<TOut>
+	inputState: ParserState<TIn, any>
+) => ParserState<TIn, TOut>
 /** Transforms a matched string into useful data.
  * The matched string is supposed to have all the properties
  * that you want it to have to transform it correctly. */
@@ -12,10 +12,10 @@ export type MatchTransformer<T> = (matchString: string) => T
 /** Transforms a ParserState into another ParserState.
  * Used to interpret a string and convert it into more useful data.
  * Can be all kinds of interpretations! */
-export class Parser<TOut> {
+export class Parser<TIn, TOut> {
 	/** Creates a Parser object.
 	 * @param transformer The ParserState transformer. */
-	constructor(public transformer: ParserStateTransformer<any, TOut>) {}
+	constructor(public transformer: ParserStateTransformer<TIn, TOut>) {}
 
 	static void = Parser.newStandard(
 		/.*/,
@@ -26,16 +26,16 @@ export class Parser<TOut> {
 	static nothing = new Parser((state) => state)
 
 	/** Runs a parser by initiating a ParserState with the
-	 * targetString and giving it as an input to the parser.
-	 * @param targetString The target string to run the parser on. */
-	run(targetString: string) {
-		return this.transformer(new ParserState({ targetString }))
+	 * target and giving it as an input to the parser.
+	 * @param target The target string to run the parser on. */
+	run(target: TIn) {
+		return this.transformer(new ParserState({ target }))
 	}
 
 	/** Creates a new parser that will transform the result of the previous parser.
 	 * @param fn The function that transforms the result. */
 	map<T>(fn: (result: TOut) => T) {
-		return new Parser<T>((inputState) => {
+		return new Parser<TIn, T>((inputState) => {
 			const nextState = this.transformer(inputState)
 
 			if (nextState.error)
@@ -49,7 +49,7 @@ export class Parser<TOut> {
 	/** Creates a new parser that will transform the error of the previous parser.
 	 * @param errorMsgProvider What provides the error message. */
 	mapError(errorMsgProvider: ErrorMsgProvider) {
-		return new Parser<TOut>((inputState) => {
+		return new Parser<TIn, TOut>((inputState) => {
 			const nextState = this.transformer(inputState)
 
 			if (nextState.error) return nextState.errorify(errorMsgProvider)
@@ -63,7 +63,7 @@ export class Parser<TOut> {
 	 * @param fn The function that filters the result.
 	 * @param filteringEMP What provides the error message if the filter returns false. */
 	filter(fn: (result: TOut) => boolean, filteringEMP: ErrorMsgProvider) {
-		return new Parser<TOut>((inputState) => {
+		return new Parser<TIn, TOut>((inputState) => {
 			const nextState = this.transformer(inputState)
 			if (nextState.error) return nextState;
 
@@ -78,8 +78,8 @@ export class Parser<TOut> {
 
 	/** Chooses the next parser depending on the previous result.
 	 * @param fn The function that chooses the next parser. */
-	chain<T>(fn: (result: TOut) => Parser<T>) {
-		return new Parser<T>((inputState) => {
+	chain<T>(fn: (result: TOut) => Parser<TIn, T>) {
+		return new Parser<TIn, T>((inputState) => {
 			const nextState = this.transformer(inputState)
 
 			if (nextState.error) return nextState.errorify(nextState.error)
@@ -97,24 +97,24 @@ export class Parser<TOut> {
 	}
 
 	/** Creates a standard regex parser.
-	 * @param regex The RegExp used to match the targetString.
+	 * @param regex The RegExp used to match the target.
 	 * @param matchTransformer The function that transforms the matchString into organized data.
-	 * @param errorMsgProvider The function that returns an error message eventually using the targetString, and maybe the index. */
-	static newStandard<T>(
+	 * @param errorMsgProvider The function that returns an error message eventually using the target, and maybe the index. */
+	static newStandard<R>(
 		regex: RegExp,
-		matchTransformer: MatchTransformer<T>,
+		matchTransformer: MatchTransformer<R>,
 		errorMsgProvider: ErrorMsgProvider
 	) {
-		const standard = new Parser<T>((inputState) => {
-			const { targetString, index, error } = inputState
+		const standard = new Parser<string, R>((inputState) => {
+			const { target, index, error } = inputState
 			if (error) return inputState // Propagate the error
 
 			// Handling unexpected end of input
-			const slicedString = targetString.slice(index)
+			const slicedString = target.slice(index)
 			if (slicedString.length === 0) {
 				return inputState.errorify({
 					info: `Unexpected end of input.`,
-					targetString
+					target
 				})
 			}
 
@@ -134,4 +134,4 @@ export class Parser<TOut> {
 }
 
 /** An array of different generic parsers. */
-export type ParserTuple<T extends any[]> = { [K in keyof T]: Parser<T[K]> }
+export type ParserTuple<TIn, T extends any[]> = { [K in keyof T]: Parser<TIn, T[K]> }
